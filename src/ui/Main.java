@@ -34,9 +34,6 @@ public class Main extends Application {
     Button leftPaste, leftCopy, rightPaste, rightCopy;
     TextArea leftText, rightText;
 
-    //算法
-    public int offset = 1;
-
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setScene(scene);
@@ -44,17 +41,14 @@ public class Main extends Application {
         primaryStage.setTitle("加密/解密工具");
 
         //随机密钥部分
-        offsetText = new TextField(String.valueOf(offset));
+        offsetText = new TextField("1");
         offsetLabel = new Label("密钥（0，1，2 ... 25）：");
         //设置标签右对齐
         offsetLabel.setMaxWidth(Double.MAX_VALUE);
         offsetLabel.setAlignment(Pos.CENTER_RIGHT);
 
         offsetButton = new Button("随机生成");
-        offsetButton.setOnAction(event -> {
-            getRandomOffset();
-            offsetText.setText(String.valueOf(offset));
-        });
+        offsetButton.setOnAction(event -> getRandomOffset(offsetText));
         mainPane.add(offsetLabel, 0, 0);
         mainPane.add(offsetText, 1, 0);
         mainPane.add(offsetButton, 2, 0);
@@ -66,7 +60,7 @@ public class Main extends Application {
         leftCopy = new Button();
         rightPaste = new Button();
         rightCopy = new Button();
-        leftText = new TextArea();
+        leftText = new TextArea("a");
         rightText = new TextArea();
         String plainTextHint = "加";
         String cipherTextHint = "解";
@@ -137,7 +131,7 @@ public class Main extends Application {
         encButton.setMinSize(50, 80);
 
         encButton.setOnAction(event -> {
-            Integer tempInt = Integer.parseInt(keyTextArea.getText());
+            int tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
             String keyStr = String.valueOf(offset);
             keyTextArea.setText(keyStr);
@@ -160,7 +154,7 @@ public class Main extends Application {
         decButton.setMinSize(50, 80);
 
         decButton.setOnAction(event -> {
-            Integer tempInt = Integer.parseInt(keyTextArea.getText());
+            int tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
             String keyStr = String.valueOf(offset);
             keyTextArea.setText(keyStr);
@@ -198,9 +192,15 @@ public class Main extends Application {
         });
     }
 
-    private void getRandomOffset() {
+    /**
+     * 随机生成密钥
+     *
+     * @param offsetText 密钥放置的文本框
+     */
+    private void getRandomOffset(TextField offsetText) {
         Random rand = new Random();
-        offset = rand.nextInt(26);
+        int myOffsetKey = rand.nextInt(26);
+        offsetText.setText(String.valueOf(myOffsetKey));
     }
 
     public static void main(String[] args) {
