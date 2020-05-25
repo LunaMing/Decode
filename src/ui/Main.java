@@ -36,13 +36,24 @@ public class Main extends Application {
 
     //算法
     public int offset = 7;
-    Caesar caesar = new Caesar(offset);
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setTitle("加密/解密工具");
+
+        //随机密钥部分
+        offsetText = new TextField(String.valueOf(offset));
+        offsetLabel = new Label("                  密钥(0,1,2...25):");
+        offsetButton = new Button("随机生成");
+        offsetButton.setOnAction(event -> {
+            getRandomOffset();
+            offsetText.setText(String.valueOf(offset));
+        });
+        mainPane.add(offsetLabel, 0, 0);
+        mainPane.add(offsetText, 1, 0);
+        mainPane.add(offsetButton, 2, 0);
 
         //左右文本框和按钮
         leftPane = new GridPane();
@@ -129,6 +140,25 @@ public class Main extends Application {
         pane.add(label, 0, 0);
         pane.add(textArea, 0, 1);
         pane.add(bottomPane, 0, 2);
+    }
+
+
+    /**
+     * 设置加密按钮
+     *
+     * @param encButton 要设置为“加密”的按钮
+     */
+    private void setEncBtn(Button encButton, TextField offsetText, TextArea rightText, TextArea leftText) {
+        encButton.setOnAction(event -> {
+            Integer tempInt;
+            tempInt = Integer.parseInt(offsetText.getText());
+            int offset = Math.abs(tempInt) % 26;
+            String tempStr = String.valueOf(offset);
+            offsetText.setText(tempStr);
+            String plainText = leftText.getText();
+            String cipherText = new Caesar(offset).encrypt(plainText);
+            rightText.setText(cipherText);
+        });
     }
 
     /**
