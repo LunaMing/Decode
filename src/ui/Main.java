@@ -16,10 +16,9 @@ import java.util.Random;
 
 public class Main extends Application {
     //ui组件
-    GridPane pane = new GridPane();
-    Scene scene = new Scene(pane, 600, 250);
-    Label leftLabel = new Label("加密内容(只能用于英语字母):");
-    Label rightLabel = new Label("解密内容(只能用于英语字母):");
+    GridPane mainPane = new GridPane();
+    Scene scene = new Scene(mainPane, 600, 250);
+
     TextArea leftText = new TextArea();
     TextArea rightText = new TextArea();
     Button encBtn = new Button();
@@ -28,11 +27,7 @@ public class Main extends Application {
     Button leftCopy = new Button();
     Button rightPaste = new Button();
     Button rightCopy = new Button();
-    GridPane leftPane = new GridPane();
-    GridPane leftBottomPane = new GridPane();
     GridPane centerPane = new GridPane();
-    GridPane rightPane = new GridPane();
-    GridPane rightBottomPane = new GridPane();
     Label offsetLabel = new Label("                  密钥(0,1,2...25):");
     TextField offsetText = new TextField();
     Button offsetButton = new Button("随机生成");
@@ -47,55 +42,43 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setTitle("加密/解密工具");
 
-        encBtn.setText("→→\n加密\n→→");
-        encBtn.setMinSize(50, 80);
-        decBtn.setText("←←\n解密\n←←");
-        decBtn.setMinSize(50, 80);
 
+        //左右文本框和按钮
+        Label leftLabel = new Label("加密内容(只能用于英语字母):");
+        Label rightLabel = new Label("解密内容(只能用于英语字母):");
         setPasteButton(leftPaste, leftText);
         setPasteButton(rightPaste, rightText);
         setCopyButton(leftCopy, leftText);
         setCopyButton(rightCopy, rightText);
-
-        leftPane.setHgap(20);
+        GridPane leftPane = new GridPane();
+        GridPane rightPane = new GridPane();
         leftPane.setPadding(new Insets(20, 10, 20, 5));
-        leftBottomPane.setHgap(20);
-        leftBottomPane.add(leftPaste, 0, 0);
-        leftBottomPane.add(leftCopy, 1, 0);
-        leftPane.add(leftLabel, 0, 0);
-        leftPane.add(leftText, 0, 1);
-        leftPane.add(leftBottomPane, 0, 2);
+        rightPane.setPadding(new Insets(20, 5, 20, 10));
+        setPane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
+        setPane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
 
         centerPane.setPadding(new Insets(30, 5, 30, 5));
         centerPane.setVgap(20);
         centerPane.add(encBtn, 0, 0);
         centerPane.add(decBtn, 0, 1);
 
-        rightPane.setHgap(20);
-        rightPane.setPadding(new Insets(20, 5, 20, 10));
-        rightBottomPane.setHgap(20);
-        rightBottomPane.add(rightPaste, 0, 0);
-        rightBottomPane.add(rightCopy, 1, 0);
-        rightPane.add(rightLabel, 0, 0);
-        rightPane.add(rightText, 0, 1);
-        rightPane.add(rightBottomPane, 0, 2);
-
         offsetText.setText(String.valueOf(offset));
-        pane.add(offsetLabel, 0, 0);
-        pane.add(offsetText, 1, 0);
-        pane.add(offsetButton, 2, 0);
-        pane.add(leftPane, 0, 1);
-        pane.add(centerPane, 1, 1);
-        pane.add(rightPane, 2, 1);
+        mainPane.add(offsetLabel, 0, 0);
+        mainPane.add(offsetText, 1, 0);
+        mainPane.add(offsetButton, 2, 0);
+        mainPane.add(leftPane, 0, 1);
+        mainPane.add(centerPane, 1, 1);
+        mainPane.add(rightPane, 2, 1);
 
         offsetButton.setOnAction(event -> {
             getRandomOffset();
             offsetText.setText(String.valueOf(offset));
         });
 
-        leftBottomPane.setAlignment(Pos.CENTER);
-        rightBottomPane.setAlignment(Pos.CENTER);
-
+        encBtn.setText("→→\n加密\n→→");
+        encBtn.setMinSize(50, 80);
+        decBtn.setText("←←\n解密\n←←");
+        decBtn.setMinSize(50, 80);
         encBtn.setOnAction(event -> {
             offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
             offsetText.setText(String.valueOf(offset));
@@ -107,6 +90,28 @@ public class Main extends Application {
             offsetText.setText(String.valueOf(offset));
             leftText.setText(caesar.decrypt(rightText.getText()));
         });
+    }
+
+    /**
+     * 设置左右输入文本的pane布局
+     *
+     * @param pane        设置的布局
+     * @param pasteButton 粘贴按钮
+     * @param copyButton  复制按钮
+     * @param label       文本标签，指示文本框应该填写的内容
+     * @param textArea    文本框
+     */
+    private void setPane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
+        GridPane bottomPane = new GridPane();
+        bottomPane.setHgap(20);
+        bottomPane.add(pasteButton, 0, 0);
+        bottomPane.add(copyButton, 1, 0);
+        bottomPane.setAlignment(Pos.CENTER);
+
+        pane.setHgap(20);
+        pane.add(label, 0, 0);
+        pane.add(textArea, 0, 1);
+        pane.add(bottomPane, 0, 2);
     }
 
     /**
