@@ -19,18 +19,20 @@ public class Main extends Application {
     GridPane mainPane = new GridPane();
     Scene scene = new Scene(mainPane, 600, 250);
 
-    TextArea leftText = new TextArea();
-    TextArea rightText = new TextArea();
+
     Button encBtn = new Button();
     Button decBtn = new Button();
-    Button leftPaste = new Button();
-    Button leftCopy = new Button();
-    Button rightPaste = new Button();
-    Button rightCopy = new Button();
+
     GridPane centerPane = new GridPane();
     Label offsetLabel = new Label("                  密钥(0,1,2...25):");
     TextField offsetText = new TextField();
     Button offsetButton = new Button("随机生成");
+
+    //左右文本框和按钮
+    Label leftLabel, rightLabel;
+    GridPane leftPane, rightPane;
+    Button leftPaste, leftCopy, rightPaste, rightCopy;
+    TextArea leftText, rightText;
 
     //算法
     public int offset = 7;
@@ -44,14 +46,12 @@ public class Main extends Application {
 
 
         //左右文本框和按钮
-        Label leftLabel = new Label("加密内容(只能用于英语字母):");
-        Label rightLabel = new Label("解密内容(只能用于英语字母):");
-        setPasteButton(leftPaste, leftText);
-        setPasteButton(rightPaste, rightText);
-        setCopyButton(leftCopy, leftText);
-        setCopyButton(rightCopy, rightText);
-        GridPane leftPane = new GridPane();
-        GridPane rightPane = new GridPane();
+        leftPane = rightPane = new GridPane();
+        leftPaste = leftCopy = rightPaste = rightCopy = new Button();
+        leftText = rightText = new TextArea();
+        leftLabel = new Label("加密内容(只能用于英语字母):");
+        rightLabel = new Label("解密内容(只能用于英语字母):");
+
         leftPane.setPadding(new Insets(20, 10, 20, 5));
         rightPane.setPadding(new Insets(20, 5, 20, 10));
         setPane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
@@ -102,6 +102,9 @@ public class Main extends Application {
      * @param textArea    文本框
      */
     private void setPane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
+        setPasteButton(pasteButton, textArea);
+        setCopyButton(copyButton, textArea);
+
         GridPane bottomPane = new GridPane();
         bottomPane.setHgap(20);
         bottomPane.add(pasteButton, 0, 0);
