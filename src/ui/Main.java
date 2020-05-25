@@ -54,8 +54,8 @@ public class Main extends Application {
         GridPane rightPane = new GridPane();
         leftPane.setPadding(new Insets(20, 10, 20, 5));
         rightPane.setPadding(new Insets(20, 5, 20, 10));
-        setPane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
-        setPane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
+        setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
+        setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
 
         centerPane.setPadding(new Insets(30, 5, 30, 5));
         centerPane.setVgap(20);
@@ -101,7 +101,7 @@ public class Main extends Application {
      * @param label       文本标签，指示文本框应该填写的内容
      * @param textArea    文本框
      */
-    private void setPane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
+    private void setAsidePane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
         GridPane bottomPane = new GridPane();
         bottomPane.setHgap(20);
         bottomPane.add(pasteButton, 0, 0);
