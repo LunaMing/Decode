@@ -45,43 +45,48 @@ public class Main extends Application {
         keyHintLabel.setMaxWidth(Double.MAX_VALUE);
         keyHintLabel.setAlignment(Pos.CENTER_RIGHT);
         keyHintLabel.setText("密钥（0，1，2 ... 25）：");
-        mainPane.add(keyHintLabel, 0, 0);
-        
+
         //密钥输入框
         keyTextField = new TextField("1");
-        mainPane.add(keyTextField, 1, 0);
 
         //随机生成密钥的按钮
         randomKeyButton = new Button("随机生成");
         randomKeyButton.setOnAction(event -> getRandomOffset(keyTextField));
+
+        //密钥系列加入到主布局
+        mainPane.add(keyHintLabel, 0, 0);
+        mainPane.add(keyTextField, 1, 0);
         mainPane.add(randomKeyButton, 2, 0);
 
-        //左右文本框和按钮
-        leftPane = new GridPane();
-        rightPane = new GridPane();
-        leftPaste = new Button();
-        leftCopy = new Button();
-        rightPaste = new Button();
-        rightCopy = new Button();
-        leftText = new TextArea("a");
-        rightText = new TextArea();
+        //明文密文输入提示
+        String inputHintLabel_front = "请输入";
         String plainTextHint = "加";
         String cipherTextHint = "解";
-        String inputHintLabel_front = "请输入";
         String inputHintLabel_back = "密内容（仅限英文字母）：";
         leftLabel = new Label(inputHintLabel_front + plainTextHint + inputHintLabel_back);
         rightLabel = new Label(inputHintLabel_front + cipherTextHint + inputHintLabel_back);
-        setPasteButton(leftPaste, leftText);
-        setPasteButton(rightPaste, rightText);
-        setCopyButton(leftCopy, leftText);
-        setCopyButton(rightCopy, rightText);
-        leftPane.setPadding(new Insets(20, 10, 20, 5));
-        rightPane.setPadding(new Insets(20, 5, 20, 10));
-        setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
-        setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
 
-        mainPane.add(leftPane, 0, 1);
-        mainPane.add(rightPane, 2, 1);
+        //左文本框和复制粘贴按钮
+        leftText = new TextArea("a");
+        leftCopy = new Button();
+        setCopyButton(leftCopy, leftText);
+        leftPaste = new Button();
+        setPasteButton(leftPaste, leftText);
+        //右文本框和复制粘贴按钮
+        rightText = new TextArea();
+        rightCopy = new Button();
+        setCopyButton(rightCopy, rightText);
+        rightPaste = new Button();
+        setPasteButton(rightPaste, rightText);
+
+        //左边布局
+        leftPane = new GridPane();
+        leftPane.setPadding(new Insets(20, 10, 20, 5));
+        setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
+        //右边布局
+        rightPane = new GridPane();
+        rightPane.setPadding(new Insets(20, 5, 20, 10));
+        setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
 
         //中间加密解密的按钮
         encBtn = new Button();
@@ -89,13 +94,17 @@ public class Main extends Application {
         setEncBtn(encBtn, keyTextField, rightText, leftText);
         setDecBtn(decBtn, keyTextField, rightText, leftText);
 
+        //中间布局
         centerPane = new GridPane();
         centerPane.setPadding(new Insets(30, 5, 30, 5));
         centerPane.setVgap(20);
         centerPane.add(encBtn, 0, 0);
         centerPane.add(decBtn, 0, 1);
 
+        //将左中右布局加入到主布局中
+        mainPane.add(leftPane, 0, 1);
         mainPane.add(centerPane, 1, 1);
+        mainPane.add(rightPane, 2, 1);
     }
 
     /**
