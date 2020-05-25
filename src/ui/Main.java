@@ -93,30 +93,14 @@ public class Main extends Application {
         encBtn.setMinSize(50, 80);
         decBtn.setMinSize(50, 80);
 
-        encBtn.setOnAction(event -> {
-            offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
-            offsetText.setText(String.valueOf(offset));
-            rightText.setText(caesar.encrypt(leftText.getText()));
-        });
+        setEncBtn(encBtn, offsetText, rightText, leftText);
         decBtn.setOnAction(event -> {
             offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
             offsetText.setText(String.valueOf(offset));
-            leftText.setText(caesar.decrypt(rightText.getText()));
+            leftText.setText(new Caesar(offset).decrypt(rightText.getText()));
         });
 
         mainPane.add(centerPane, 1, 1);
-
-        //随机密钥部分
-        offsetText = new TextField(String.valueOf(offset));
-        offsetLabel = new Label("                  密钥(0,1,2...25):");
-        offsetButton = new Button("随机生成");
-        offsetButton.setOnAction(event -> {
-            getRandomOffset();
-            offsetText.setText(String.valueOf(offset));
-        });
-        mainPane.add(offsetLabel, 0, 0);
-        mainPane.add(offsetText, 1, 0);
-        mainPane.add(offsetButton, 2, 0);
     }
 
     /**
