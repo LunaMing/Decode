@@ -143,7 +143,7 @@ public class Main extends Application {
             String keyStr = String.valueOf(offset);
             keyTextArea.setText(keyStr);
             String plainText = plainTextArea.getText();
-            String cipherText = new Caesar(offset).encrypt(plainText);
+            String cipherText = new Caesar(offset).encrypt(plainText);//凯撒密码
             cipherTextArea.setText(cipherText);
         });
     }
