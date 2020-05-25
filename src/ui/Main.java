@@ -19,14 +19,12 @@ public class Main extends Application {
     GridPane mainPane = new GridPane();
     Scene scene = new Scene(mainPane, 600, 250);
 
-
-    Button encBtn = new Button();
-    Button decBtn = new Button();
-
-    GridPane centerPane = new GridPane();
-    Label offsetLabel = new Label("                  密钥(0,1,2...25):");
-    TextField offsetText = new TextField();
-    Button offsetButton = new Button("随机生成");
+    //中间加密解密的按钮
+    Button encBtn, decBtn;
+    GridPane centerPane;
+    Label offsetLabel;
+    TextField offsetText;
+    Button offsetButton;
 
     //左右文本框和按钮
     Label leftLabel, rightLabel;
@@ -43,7 +41,6 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setTitle("加密/解密工具");
-
 
         //左右文本框和按钮
         leftPane = new GridPane();
@@ -66,11 +63,20 @@ public class Main extends Application {
         setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
 
         //中间加密解密的按钮
+        encBtn = new Button();
+        decBtn = new Button();
+        centerPane = new GridPane();
+        offsetText = new TextField();
         centerPane.setPadding(new Insets(30, 5, 30, 5));
         centerPane.setVgap(20);
         centerPane.add(encBtn, 0, 0);
         centerPane.add(decBtn, 0, 1);
-
+        offsetLabel = new Label("                  密钥(0,1,2...25):");
+        offsetButton = new Button("随机生成");
+        offsetButton.setOnAction(event -> {
+            getRandomOffset();
+            offsetText.setText(String.valueOf(offset));
+        });
         offsetText.setText(String.valueOf(offset));
         mainPane.add(offsetLabel, 0, 0);
         mainPane.add(offsetText, 1, 0);
@@ -78,11 +84,6 @@ public class Main extends Application {
         mainPane.add(leftPane, 0, 1);
         mainPane.add(centerPane, 1, 1);
         mainPane.add(rightPane, 2, 1);
-
-        offsetButton.setOnAction(event -> {
-            getRandomOffset();
-            offsetText.setText(String.valueOf(offset));
-        });
 
         encBtn.setText("→→\n加密\n→→");
         encBtn.setMinSize(50, 80);
