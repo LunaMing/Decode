@@ -46,9 +46,14 @@ public class Main extends Application {
 
 
         //左右文本框和按钮
-        leftPane = rightPane = new GridPane();
-        leftPaste = leftCopy = rightPaste = rightCopy = new Button();
-        leftText = rightText = new TextArea();
+        leftPane = new GridPane();
+        rightPane = new GridPane();
+        leftPaste = new Button();
+        leftCopy = new Button();
+        rightPaste = new Button();
+        rightCopy = new Button();
+        leftText = new TextArea();
+        rightText = new TextArea();
         leftLabel = new Label("加密内容(只能用于英语字母):");
         rightLabel = new Label("解密内容(只能用于英语字母):");
         setPasteButton(leftPaste, leftText);
