@@ -54,18 +54,8 @@ public class Main extends Application {
 
         setPasteButton(leftPaste, leftText);
         setPasteButton(rightPaste, rightText);
-
-        leftCopy.setText("从此处复制");
-        leftCopy.setOnAction(event -> {
-            leftText.selectAll();
-            leftText.copy();
-        });
-
-        rightCopy.setText("从此处复制");
-        rightCopy.setOnAction(event -> {
-            rightText.selectAll();
-            rightText.copy();
-        });
+        setCopyButton(leftCopy, leftText);
+        setCopyButton(rightCopy, rightText);
 
         leftPane.setHgap(20);
         leftPane.setPadding(new Insets(20, 10, 20, 5));
@@ -129,6 +119,19 @@ public class Main extends Application {
         pasteButton.setOnAction(event -> {
             textarea.clear();
             textarea.paste();
+        });
+    }
+
+    /**
+     * @param copyButton 要设置为“复制”的按钮
+     * @param textarea   要绑定的文本框，设置后完成后，点击按钮，会将这个文本框里面的文字复制出来
+     * @description 把button设置为“复制”按钮，绑定在某个文本框上
+     */
+    private void setCopyButton(Button copyButton, TextArea textarea) {
+        copyButton.setText("从此处复制");
+        copyButton.setOnAction(event -> {
+            textarea.selectAll();
+            textarea.copy();
         });
     }
 
