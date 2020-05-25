@@ -110,6 +110,8 @@ public class Main extends Application {
     }
 
     /**
+     * 设置粘贴按钮
+     *
      * @param pasteButton 要设置为“粘贴”的按钮
      * @param textarea    要绑定的文本框，设置后完成后，点击按钮，会将文本粘贴到这个文本框里面
      * @description 把button设置为“粘贴”按钮，绑定在某个文本框上
@@ -123,6 +125,8 @@ public class Main extends Application {
     }
 
     /**
+     * 设置复制按钮
+     *
      * @param copyButton 要设置为“复制”的按钮
      * @param textarea   要绑定的文本框，设置后完成后，点击按钮，会将这个文本框里面的文字复制出来
      * @description 把button设置为“复制”按钮，绑定在某个文本框上
