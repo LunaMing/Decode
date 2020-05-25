@@ -52,22 +52,15 @@ public class Main extends Application {
         decBtn.setText("←←\n解密\n←←");
         decBtn.setMinSize(50, 80);
 
-        leftPaste.setText("粘贴到此处");
-        leftPaste.setOnAction(event -> {
-            leftText.clear();
-            leftText.paste();
-        });
+        setPasteButton(leftPaste, leftText);
+        setPasteButton(rightPaste, rightText);
+
         leftCopy.setText("从此处复制");
         leftCopy.setOnAction(event -> {
             leftText.selectAll();
             leftText.copy();
         });
 
-        rightPaste.setText("粘贴到此处");
-        rightPaste.setOnAction(event -> {
-            rightText.clear();
-            rightText.paste();
-        });
         rightCopy.setText("从此处复制");
         rightCopy.setOnAction(event -> {
             rightText.selectAll();
@@ -126,7 +119,20 @@ public class Main extends Application {
         });
     }
 
-    void getRandomOffset() {
+    /**
+     * @param pasteButton 要设置为“粘贴”的按钮
+     * @param textarea    要绑定的文本框，设置后完成后，点击按钮，会将文本粘贴到这个文本框里面
+     * @description 把button设置为“粘贴”按钮，绑定在某个文本框上
+     */
+    private void setPasteButton(Button pasteButton, TextArea textarea) {
+        pasteButton.setText("粘贴到此处");
+        pasteButton.setOnAction(event -> {
+            textarea.clear();
+            textarea.paste();
+        });
+    }
+
+    private void getRandomOffset() {
         Random rand = new Random();
         offset = rand.nextInt(26);
     }
