@@ -46,11 +46,20 @@ public class Main extends Application {
 
 
         //左右文本框和按钮
-        leftPane = rightPane = new GridPane();
-        leftPaste = leftCopy = rightPaste = rightCopy = new Button();
-        leftText = rightText = new TextArea();
+        leftPane = new GridPane();
+        rightPane = new GridPane();
+        leftPaste = new Button();
+        leftCopy = new Button();
+        rightPaste = new Button();
+        rightCopy = new Button();
+        leftText = new TextArea();
+        rightText = new TextArea();
         leftLabel = new Label("加密内容(只能用于英语字母):");
         rightLabel = new Label("解密内容(只能用于英语字母):");
+        setPasteButton(leftPaste, leftText);
+        setPasteButton(rightPaste, rightText);
+        setCopyButton(leftCopy, leftText);
+        setCopyButton(rightCopy, rightText);
         leftPane.setPadding(new Insets(20, 10, 20, 5));
         rightPane.setPadding(new Insets(20, 5, 20, 10));
         setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
@@ -102,8 +111,6 @@ public class Main extends Application {
      * @param textArea    文本框
      */
     private void setAsidePane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
-        setPasteButton(pasteButton, textArea);
-        setCopyButton(copyButton, textArea);
 
         GridPane bottomPane = new GridPane();
         bottomPane.setHgap(20);
