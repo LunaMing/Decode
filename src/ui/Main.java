@@ -81,20 +81,14 @@ public class Main extends Application {
         //中间加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
+        setEncBtn(encBtn, offsetText, rightText, leftText);
+        setDecBtn(decBtn, offsetText, rightText, leftText);
+
         centerPane = new GridPane();
         centerPane.setPadding(new Insets(30, 5, 30, 5));
         centerPane.setVgap(20);
         centerPane.add(encBtn, 0, 0);
         centerPane.add(decBtn, 0, 1);
-
-        encBtn.setText("→→\n加密\n→→");
-        decBtn.setText("←←\n解密\n←←");
-
-        encBtn.setMinSize(50, 80);
-        decBtn.setMinSize(50, 80);
-
-        setEncBtn(encBtn, offsetText, rightText, leftText);
-        setDecBtn(decBtn, offsetText, rightText, leftText);
 
         mainPane.add(centerPane, 1, 1);
     }
@@ -132,6 +126,9 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void setEncBtn(Button encButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
+        encButton.setText("→→\n加密\n→→");
+        encButton.setMinSize(50, 80);
+
         encButton.setOnAction(event -> {
             Integer tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
@@ -152,6 +149,9 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void setDecBtn(Button decButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
+        decButton.setText("←←\n解密\n←←");
+        decButton.setMinSize(50, 80);
+
         decButton.setOnAction(event -> {
             Integer tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
