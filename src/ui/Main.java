@@ -24,9 +24,9 @@ public class Main extends Application {
     GridPane centerPane;
 
     //随机密钥
-    Label offsetLabel;
-    TextField offsetText;
-    Button offsetButton;
+    Label keyHintLabel;
+    TextField keyTextField;
+    Button randomKeyButton;
 
     //明文密文输入
     Label leftLabel, rightLabel;
@@ -40,18 +40,21 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setTitle("加密/解密工具");
 
-        //随机密钥部分
-        offsetText = new TextField("1");
-        offsetLabel = new Label("密钥（0，1，2 ... 25）：");
-        //设置标签右对齐
-        offsetLabel.setMaxWidth(Double.MAX_VALUE);
-        offsetLabel.setAlignment(Pos.CENTER_RIGHT);
+        //设置输入密钥提示标签，右对齐
+        keyHintLabel = new Label();
+        keyHintLabel.setMaxWidth(Double.MAX_VALUE);
+        keyHintLabel.setAlignment(Pos.CENTER_RIGHT);
+        keyHintLabel.setText("密钥（0，1，2 ... 25）：");
+        mainPane.add(keyHintLabel, 0, 0);
+        
+        //密钥输入框
+        keyTextField = new TextField("1");
+        mainPane.add(keyTextField, 1, 0);
 
-        offsetButton = new Button("随机生成");
-        offsetButton.setOnAction(event -> getRandomOffset(offsetText));
-        mainPane.add(offsetLabel, 0, 0);
-        mainPane.add(offsetText, 1, 0);
-        mainPane.add(offsetButton, 2, 0);
+        //随机生成密钥的按钮
+        randomKeyButton = new Button("随机生成");
+        randomKeyButton.setOnAction(event -> getRandomOffset(keyTextField));
+        mainPane.add(randomKeyButton, 2, 0);
 
         //左右文本框和按钮
         leftPane = new GridPane();
@@ -83,8 +86,8 @@ public class Main extends Application {
         //中间加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
-        setEncBtn(encBtn, offsetText, rightText, leftText);
-        setDecBtn(decBtn, offsetText, rightText, leftText);
+        setEncBtn(encBtn, keyTextField, rightText, leftText);
+        setDecBtn(decBtn, keyTextField, rightText, leftText);
 
         centerPane = new GridPane();
         centerPane.setPadding(new Insets(30, 5, 30, 5));
