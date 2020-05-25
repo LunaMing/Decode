@@ -94,11 +94,7 @@ public class Main extends Application {
         decBtn.setMinSize(50, 80);
 
         setEncBtn(encBtn, offsetText, rightText, leftText);
-        decBtn.setOnAction(event -> {
-            offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
-            offsetText.setText(String.valueOf(offset));
-            leftText.setText(new Caesar(offset).decrypt(rightText.getText()));
-        });
+        setDecBtn(decBtn, offsetText, rightText, leftText);
 
         mainPane.add(centerPane, 1, 1);
     }
@@ -130,21 +126,40 @@ public class Main extends Application {
     /**
      * 设置加密按钮
      *
-     * @param encButton 要设置为“加密”的按钮
-     * @param keyTextArea 密钥的文本框
+     * @param encButton      要设置为“加密”的按钮
+     * @param keyTextArea    密钥的文本框
      * @param cipherTextArea 密文的文本框
-     * @param plainTextArea 明文的文本框
+     * @param plainTextArea  明文的文本框
      */
     private void setEncBtn(Button encButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
         encButton.setOnAction(event -> {
-            Integer tempInt;
-            tempInt = Integer.parseInt(keyTextArea.getText());
+            Integer tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
             String keyStr = String.valueOf(offset);
             keyTextArea.setText(keyStr);
             String plainText = plainTextArea.getText();
             String cipherText = new Caesar(offset).encrypt(plainText);//凯撒密码
             cipherTextArea.setText(cipherText);
+        });
+    }
+
+    /**
+     * 设置解密按钮
+     *
+     * @param decButton      要设置为“解密”的按钮
+     * @param keyTextArea    密钥的文本框
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void setDecBtn(Button decButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
+        decButton.setOnAction(event -> {
+            Integer tempInt = Integer.parseInt(keyTextArea.getText());
+            int offset = Math.abs(tempInt) % 26;
+            String keyStr = String.valueOf(offset);
+            keyTextArea.setText(keyStr);
+            String cipherText = cipherTextArea.getText();
+            String plainText = new Caesar(offset).decrypt(cipherText);//凯撒密码
+            plainTextArea.setText(plainText);
         });
     }
 
