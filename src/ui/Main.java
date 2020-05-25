@@ -51,12 +51,12 @@ public class Main extends Application {
         leftText = rightText = new TextArea();
         leftLabel = new Label("加密内容(只能用于英语字母):");
         rightLabel = new Label("解密内容(只能用于英语字母):");
-
         leftPane.setPadding(new Insets(20, 10, 20, 5));
         rightPane.setPadding(new Insets(20, 5, 20, 10));
-        setPane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
-        setPane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
+        setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
+        setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
 
+        //中间加密解密的按钮
         centerPane.setPadding(new Insets(30, 5, 30, 5));
         centerPane.setVgap(20);
         centerPane.add(encBtn, 0, 0);
@@ -101,7 +101,7 @@ public class Main extends Application {
      * @param label       文本标签，指示文本框应该填写的内容
      * @param textArea    文本框
      */
-    private void setPane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
+    private void setAsidePane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
         setPasteButton(pasteButton, textArea);
         setCopyButton(copyButton, textArea);
 
