@@ -131,17 +131,20 @@ public class Main extends Application {
      * 设置加密按钮
      *
      * @param encButton 要设置为“加密”的按钮
+     * @param keyTextArea 密钥的文本框
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea 明文的文本框
      */
-    private void setEncBtn(Button encButton, TextField offsetText, TextArea rightText, TextArea leftText) {
+    private void setEncBtn(Button encButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
         encButton.setOnAction(event -> {
             Integer tempInt;
-            tempInt = Integer.parseInt(offsetText.getText());
+            tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
-            String tempStr = String.valueOf(offset);
-            offsetText.setText(tempStr);
-            String plainText = leftText.getText();
+            String keyStr = String.valueOf(offset);
+            keyTextArea.setText(keyStr);
+            String plainText = plainTextArea.getText();
             String cipherText = new Caesar(offset).encrypt(plainText);
-            rightText.setText(cipherText);
+            cipherTextArea.setText(cipherText);
         });
     }
 
