@@ -22,6 +22,8 @@ public class Main extends Application {
     //中间加密解密的按钮
     Button encBtn, decBtn;
     GridPane centerPane;
+
+    //随机密钥的按钮和文本框
     Label offsetLabel;
     TextField offsetText;
     Button offsetButton;
@@ -62,44 +64,48 @@ public class Main extends Application {
         setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
         setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
 
+        mainPane.add(leftPane, 0, 1);
+        mainPane.add(rightPane, 2, 1);
+
         //中间加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
         centerPane = new GridPane();
-        offsetText = new TextField();
         centerPane.setPadding(new Insets(30, 5, 30, 5));
         centerPane.setVgap(20);
         centerPane.add(encBtn, 0, 0);
         centerPane.add(decBtn, 0, 1);
+
+        encBtn.setText("→→\n加密\n→→");
+        decBtn.setText("←←\n解密\n←←");
+
+        encBtn.setMinSize(50, 80);
+        decBtn.setMinSize(50, 80);
+
+        encBtn.setOnAction(event -> {
+            offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
+            offsetText.setText(String.valueOf(offset));
+            rightText.setText(caesar.encrypt(leftText.getText()));
+        });
+        decBtn.setOnAction(event -> {
+            offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
+            offsetText.setText(String.valueOf(offset));
+            leftText.setText(caesar.decrypt(rightText.getText()));
+        });
+
+        mainPane.add(centerPane, 1, 1);
+
+        //随机密钥部分
+        offsetText = new TextField(String.valueOf(offset));
         offsetLabel = new Label("                  密钥(0,1,2...25):");
         offsetButton = new Button("随机生成");
         offsetButton.setOnAction(event -> {
             getRandomOffset();
             offsetText.setText(String.valueOf(offset));
         });
-        offsetText.setText(String.valueOf(offset));
         mainPane.add(offsetLabel, 0, 0);
         mainPane.add(offsetText, 1, 0);
         mainPane.add(offsetButton, 2, 0);
-        mainPane.add(leftPane, 0, 1);
-        mainPane.add(centerPane, 1, 1);
-        mainPane.add(rightPane, 2, 1);
-
-        encBtn.setText("→→\n加密\n→→");
-        encBtn.setMinSize(50, 80);
-        decBtn.setText("←←\n解密\n←←");
-        decBtn.setMinSize(50, 80);
-        encBtn.setOnAction(event -> {
-            offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
-            offsetText.setText(String.valueOf(offset));
-            rightText.setText(caesar.encrypt(leftText.getText()));
-        });
-
-        decBtn.setOnAction(event -> {
-            offset = Math.abs(Integer.parseInt(offsetText.getText())) % 26;
-            offsetText.setText(String.valueOf(offset));
-            leftText.setText(caesar.decrypt(rightText.getText()));
-        });
     }
 
     /**
