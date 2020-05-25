@@ -15,27 +15,27 @@ import solution.Caesar;
 import java.util.Random;
 
 public class Main extends Application {
-    //ui组件
+    //主场景
     GridPane mainPane = new GridPane();
     Scene scene = new Scene(mainPane, 600, 250);
 
-    //中间加密解密的按钮
+    //中间加密解密按钮
     Button encBtn, decBtn;
     GridPane centerPane;
 
-    //随机密钥的按钮和文本框
+    //随机密钥
     Label offsetLabel;
     TextField offsetText;
     Button offsetButton;
 
-    //左右文本框和按钮
+    //明文密文输入
     Label leftLabel, rightLabel;
     GridPane leftPane, rightPane;
     Button leftPaste, leftCopy, rightPaste, rightCopy;
     TextArea leftText, rightText;
 
     //算法
-    public int offset = 7;
+    public int offset = 1;
 
     @Override
     public void start(Stage primaryStage) {
@@ -102,7 +102,7 @@ public class Main extends Application {
     }
 
     /**
-     * 设置左右输入文本的pane布局
+     * 设置输入明文密文的布局
      *
      * @param pane        设置的布局
      * @param pasteButton 粘贴按钮
@@ -123,7 +123,6 @@ public class Main extends Application {
         pane.add(textArea, 0, 1);
         pane.add(bottomPane, 0, 2);
     }
-
 
     /**
      * 设置加密按钮
@@ -176,7 +175,6 @@ public class Main extends Application {
      *
      * @param pasteButton 要设置为“粘贴”的按钮
      * @param textarea    要绑定的文本框，设置后完成后，点击按钮，会将文本粘贴到这个文本框里面
-     * @description 把button设置为“粘贴”按钮，绑定在某个文本框上
      */
     private void setPasteButton(Button pasteButton, TextArea textarea) {
         pasteButton.setText("粘贴到此处");
@@ -191,7 +189,6 @@ public class Main extends Application {
      *
      * @param copyButton 要设置为“复制”的按钮
      * @param textarea   要绑定的文本框，设置后完成后，点击按钮，会将这个文本框里面的文字复制出来
-     * @description 把button设置为“复制”按钮，绑定在某个文本框上
      */
     private void setCopyButton(Button copyButton, TextArea textarea) {
         copyButton.setText("从此处复制");
