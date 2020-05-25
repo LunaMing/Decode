@@ -45,7 +45,11 @@ public class Main extends Application {
 
         //随机密钥部分
         offsetText = new TextField(String.valueOf(offset));
-        offsetLabel = new Label("                  密钥(0,1,2...25):");
+        offsetLabel = new Label("密钥（0，1，2 ... 25）：");
+        //设置标签右对齐
+        offsetLabel.setMaxWidth(Double.MAX_VALUE);
+        offsetLabel.setAlignment(Pos.CENTER_RIGHT);
+
         offsetButton = new Button("随机生成");
         offsetButton.setOnAction(event -> {
             getRandomOffset();
@@ -64,8 +68,12 @@ public class Main extends Application {
         rightCopy = new Button();
         leftText = new TextArea();
         rightText = new TextArea();
-        leftLabel = new Label("加密内容(只能用于英语字母):");
-        rightLabel = new Label("解密内容(只能用于英语字母):");
+        String plainTextHint = "加";
+        String cipherTextHint = "解";
+        String inputHintLabel_front = "请输入";
+        String inputHintLabel_back = "密内容（仅限英文字母）：";
+        leftLabel = new Label(inputHintLabel_front + plainTextHint + inputHintLabel_back);
+        rightLabel = new Label(inputHintLabel_front + cipherTextHint + inputHintLabel_back);
         setPasteButton(leftPaste, leftText);
         setPasteButton(rightPaste, rightText);
         setCopyButton(leftCopy, leftText);
