@@ -13,10 +13,13 @@ public class Caesar {
             return "";
         } else {
             for (int i = 0; i < plaintext.length(); i++) {
-                if (plaintext.charAt(i) <= 'Z') {
+                if (plaintext.charAt(i) >= 'A' && plaintext.charAt(i) <= 'Z') {
                     ciphertext += (char) ((plaintext.charAt(i) - 'A' + offset) % 26 + 'A');
-                } else {
+                } else if (plaintext.charAt(i) >= 'a' && plaintext.charAt(i) <= 'z') {
                     ciphertext += (char) ((plaintext.charAt(i) - 'a' + offset) % 26 + 'a');
+                }
+                else{
+                    System.out.println("加密错误：不是英文字母");
                 }
             }
         }
