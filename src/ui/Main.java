@@ -143,11 +143,11 @@ public class Main extends Application {
 
         encButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
-            int offset = Math.abs(tempInt) % 26;
-            String keyStr = String.valueOf(offset);
+            int key = Math.abs(tempInt) % 26;
+            String keyStr = String.valueOf(key);
             keyTextArea.setText(keyStr);
             String plainText = plainTextArea.getText();
-            String cipherText = new Caesar(offset).encrypt(plainText);//凯撒密码
+            String cipherText = new Caesar(key).encrypt(plainText);//凯撒密码
             cipherTextArea.setText(cipherText);
         });
     }

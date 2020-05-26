@@ -7,6 +7,14 @@ public class Caesar {
         this.offset = offset;
     }
 
+    /**
+     * 加密函数。
+     * 按照密钥，来进行同偏移量的加密，也就是每个字母向后移动【密钥】次数；
+     * 区分大小写，大写一套A-Z循环，小写一套a-z循环。
+     *
+     * @param plaintext 明文
+     * @return 密文
+     */
     public String encrypt(String plaintext) {
         String ciphertext = "";
         if (plaintext == "") {
@@ -17,8 +25,7 @@ public class Caesar {
                     ciphertext += (char) ((plaintext.charAt(i) - 'A' + offset) % 26 + 'A');
                 } else if (plaintext.charAt(i) >= 'a' && plaintext.charAt(i) <= 'z') {
                     ciphertext += (char) ((plaintext.charAt(i) - 'a' + offset) % 26 + 'a');
-                }
-                else{
+                } else {
                     System.out.println("加密错误：不是英文字母");
                 }
             }
