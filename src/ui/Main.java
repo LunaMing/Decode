@@ -44,7 +44,7 @@ public class Main extends Application {
         keyHintLabel = new Label();
         keyHintLabel.setMaxWidth(Double.MAX_VALUE);
         keyHintLabel.setAlignment(Pos.CENTER_RIGHT);
-        keyHintLabel.setText("密钥（0，1，2 ... 25）：");
+        keyHintLabel.setText("凯撒密码的密钥（0，1，2 ... 25）：");
 
         //密钥输入框
         keyTextField = new TextField("1");
@@ -59,12 +59,11 @@ public class Main extends Application {
         mainPane.add(randomKeyButton, 2, 0);
 
         //明文密文输入提示
-        String inputHintLabel_front = "请输入";
-        String plainTextHint = "加";
-        String cipherTextHint = "解";
-        String inputHintLabel_back = "密内容（仅限英文字母）：";
-        leftLabel = new Label(inputHintLabel_front + plainTextHint + inputHintLabel_back);
-        rightLabel = new Label(inputHintLabel_front + cipherTextHint + inputHintLabel_back);
+        String plainTextHint = "明文";
+        String cipherTextHint = "密文";
+        String inputHintLabel_back = "（仅限英文字母）：";
+        leftLabel = new Label(plainTextHint + inputHintLabel_back);
+        rightLabel = new Label(cipherTextHint + inputHintLabel_back);
 
         //左文本框和复制粘贴按钮
         leftText = new TextArea("a");
