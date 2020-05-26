@@ -13,8 +13,11 @@ public class Caesar {
             return "";
         } else {
             for (int i = 0; i < plaintext.length(); i++) {
-                if (plaintext.charAt(i) <= 'Z') ciphertext += (char) ((plaintext.charAt(i) - 'A' + offset) % 26 + 'A');
-                else ciphertext += (char) ((plaintext.charAt(i) - 'a' + offset) % 26 + 'a');
+                if (plaintext.charAt(i) <= 'Z') {
+                    ciphertext += (char) ((plaintext.charAt(i) - 'A' + offset) % 26 + 'A');
+                } else {
+                    ciphertext += (char) ((plaintext.charAt(i) - 'a' + offset) % 26 + 'a');
+                }
             }
         }
         return ciphertext;
@@ -26,9 +29,11 @@ public class Caesar {
             return "";
         } else {
             for (int i = 0; i < ciphertext.length(); i++) {
-                if (ciphertext.charAt(i) <= 'Z')
+                if (ciphertext.charAt(i) <= 'Z') {
                     plaintext += (char) ((ciphertext.charAt(i) - 'A' - offset + 26) % 26 + 'A');
-                else plaintext += (char) ((ciphertext.charAt(i) - 'a' - offset + 26) % 26 + 'a');
+                } else {
+                    plaintext += (char) ((ciphertext.charAt(i) - 'a' - offset + 26) % 26 + 'a');
+                }
             }
         }
         return plaintext;
