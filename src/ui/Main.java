@@ -18,22 +18,17 @@ import java.util.Random;
 public class Main extends Application {
     //主场景
     BorderPane mainPane = new BorderPane();
-    Scene scene = new Scene(mainPane, 600, 400);
+    Scene scene = new Scene(mainPane, 700, 300);
     //凯撒密钥
-    Label caesarKeyHintLabel;
     TextField caesarKeyTextField;
-    Button caesarRandomKeyButton;
     //明文密文输入
-    TextArea plainTextArea;
-    TextArea cipherTextArea;
+    TextArea plainTextArea, cipherTextArea;
     //加密解密按钮
-    Button encBtn, decBtn;
+    Button encryptButton, decryptButton;
     //布局
-    HBox caesarPane = new HBox();
-    GridPane tablePane = new GridPane();
-    VBox keyPane = new VBox();
-    GridPane textPane = new GridPane();
-    HBox bottomPane = new HBox();
+    VBox keyPane = new VBox();//密钥全布局
+    GridPane textPane = new GridPane();//明文密文
+    HBox encDecButtonPane = new HBox();//加解密按钮
 
     @Override
     public void start(Stage primaryStage) {
@@ -48,7 +43,7 @@ public class Main extends Application {
         //将左中右布局加入到主布局中
         mainPane.setTop(keyPane);
         mainPane.setCenter(textPane);
-        mainPane.setBottom(bottomPane);
+        mainPane.setBottom(encDecButtonPane);
     }
 
     /**
@@ -57,15 +52,14 @@ public class Main extends Application {
     private void initKeyPane() {
         //凯撒
         //设置输入密钥提示标签
-        caesarKeyHintLabel = new Label();
-        caesarKeyHintLabel.setMaxWidth(Double.MAX_VALUE);
-        caesarKeyHintLabel.setText("凯撒密码的密钥（0，1，2 ... 25）");
+        Label caesarKeyHintLabel = new Label("凯撒密码的密钥（0，1，2 ... 25）");
         //密钥输入框
         caesarKeyTextField = new TextField("1");
         //随机生成密钥的按钮
-        caesarRandomKeyButton = new Button("随机生成");
+        Button caesarRandomKeyButton = new Button("随机生成");
         caesarRandomKeyButton.setOnAction(event -> getRandomOffset(caesarKeyTextField));
         //布局
+        HBox caesarPane = new HBox();
         caesarPane.getChildren().add(caesarKeyHintLabel);
         caesarPane.getChildren().add(caesarKeyTextField);
         caesarPane.getChildren().add(caesarRandomKeyButton);
@@ -74,6 +68,7 @@ public class Main extends Application {
         Label tableHintLabel;
         tableHintLabel = new Label();
         tableHintLabel.setText("代换表");
+        GridPane subTablePane = new GridPane();//代换表布局
         //初始化表内容
         Label label;
         TextField textField;
@@ -85,8 +80,8 @@ public class Main extends Application {
             ch++;
             label = new Label(str);
             textField = new TextField(str);
-            tablePane.add(label, i, 0);
-            tablePane.add(textField, i, 1);
+            subTablePane.add(label, i, 0);
+            subTablePane.add(textField, i, 1);
         }
         //大写
         ch = 'A';
@@ -95,8 +90,8 @@ public class Main extends Application {
             ch++;
             label = new Label(str);
             textField = new TextField(str);
-            tablePane.add(label, i, 2);
-            tablePane.add(textField, i, 3);
+            subTablePane.add(label, i, 2);
+            subTablePane.add(textField, i, 3);
         }
         //数字
         ch = '0';
@@ -105,13 +100,13 @@ public class Main extends Application {
             ch++;
             label = new Label(str);
             textField = new TextField(str);
-            tablePane.add(label, i, 4);
-            tablePane.add(textField, i, 5);
+            subTablePane.add(label, i, 4);
+            subTablePane.add(textField, i, 5);
         }
         //布局
         keyPane.getChildren().add(caesarPane);
         keyPane.getChildren().add(tableHintLabel);
-        keyPane.getChildren().add(tablePane);
+        keyPane.getChildren().add(subTablePane);
     }
 
     /**
@@ -136,16 +131,15 @@ public class Main extends Application {
      */
     private void initDecodeButtonPane() {
         //加密解密的按钮
-        encBtn = new Button();
-        decBtn = new Button();
-        encBtn.setText("→→\t加密\t→→");
-        decBtn.setText("←←\t解密\t←←");
-        setEncBtn(encBtn, caesarKeyTextField, cipherTextArea, plainTextArea);
-        setDecBtn(decBtn, caesarKeyTextField, cipherTextArea, plainTextArea);
+        encryptButton = new Button();
+        decryptButton = new Button();
+        encryptButton.setText("→→\t加密\t→→");
+        decryptButton.setText("←←\t解密\t←←");
+        setEncBtn(encryptButton, caesarKeyTextField, cipherTextArea, plainTextArea);
+        setDecBtn(decryptButton, caesarKeyTextField, cipherTextArea, plainTextArea);
         //布局
-        bottomPane.setSpacing(200);
-        bottomPane.getChildren().add(encBtn);
-        bottomPane.getChildren().add(decBtn);
+        encDecButtonPane.getChildren().add(encryptButton);
+        encDecButtonPane.getChildren().add(decryptButton);
     }
 
     /**
