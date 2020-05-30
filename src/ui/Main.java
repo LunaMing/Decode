@@ -11,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import solution.Caesar;
 import solution.SubstitutionTable;
 
 import java.util.ArrayList;
@@ -138,7 +137,7 @@ public class Main extends Application {
         encryptButton.setText("→→\t加密\t→→");
         decryptButton.setText("←←\t解密\t←←");
         encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
-        setDecBtn(decryptButton, caesarKeyTextField, cipherTextArea, plainTextArea);
+        decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
         //布局
         encDecButtonPane.getChildren().add(encryptButton);
         encDecButtonPane.getChildren().add(decryptButton);
@@ -164,9 +163,9 @@ public class Main extends Application {
         //获取明文
         String plainText = plainTextArea.getText();
         //初始化代换表
-        HashMap<Character, Character> hashMap = new HashMap();
+        HashMap hashMap = new HashMap();
         String s;
-        Character k, v;
+        char k, v;
         for (int i = 0; i < 26 + 26 + 10; i++) {
             s = subTableKeyLabel.get(i).getText();
             k = s.charAt(0);
@@ -182,13 +181,11 @@ public class Main extends Application {
     /**
      * 设置解密动作
      *
-     * @param decButton      要设置为“解密”的按钮
-     * @param keyTextArea    密钥的文本框
      * @param cipherTextArea 密文的文本框
      * @param plainTextArea  明文的文本框
      */
-    private void setDecBtn(Button decButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        decButton.setOnAction(event -> {
+    private void decryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
+        /*decButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
             String keyStr = String.valueOf(offset);
@@ -197,7 +194,23 @@ public class Main extends Application {
             String plainText = new Caesar(offset).decrypt(cipherText);//凯撒密码
             plainTextArea.setText(plainText);
             caesarSetTable(offset);
-        });
+        });*/
+        //获取密文
+        String cipherText = cipherTextArea.getText();
+        //初始化代换表
+        HashMap hashMap = new HashMap();
+        String s;
+        char k, v;
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            s = subTableKeyLabel.get(i).getText();
+            k = s.charAt(0);
+            s = subTableKeyTextField.get(i).getText();
+            v = s.charAt(0);
+            hashMap.put(k, v);
+        }
+        //解密
+        String plainText = new SubstitutionTable(hashMap).decrypt(cipherText);
+        plainTextArea.setText(plainText);
     }
 
     /**
