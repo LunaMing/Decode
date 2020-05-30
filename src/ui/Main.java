@@ -142,6 +142,8 @@ public class Main extends Application {
         //加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
+        encBtn.setText("→→\t加密\t→→");
+        decBtn.setText("←←\t解密\t←←");
         setEncBtn(encBtn, caesarKeyTextField, rightText, leftText);
         setDecBtn(decBtn, caesarKeyTextField, rightText, leftText);
         //布局
@@ -152,7 +154,7 @@ public class Main extends Application {
     }
 
     /**
-     * 设置加密按钮
+     * 设置加密动作
      *
      * @param encButton      要设置为“加密”的按钮
      * @param keyTextArea    密钥的文本框
@@ -160,8 +162,6 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void setEncBtn(Button encButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        encButton.setText("→→\t加密\t→→");
-
         encButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
             int key = Math.abs(tempInt) % 26;
@@ -174,7 +174,7 @@ public class Main extends Application {
     }
 
     /**
-     * 设置解密按钮
+     * 设置解密动作
      *
      * @param decButton      要设置为“解密”的按钮
      * @param keyTextArea    密钥的文本框
@@ -182,8 +182,6 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void setDecBtn(Button decButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        decButton.setText("←←\t解密\t←←");
-
         decButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
