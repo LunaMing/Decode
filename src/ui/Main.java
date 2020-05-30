@@ -19,27 +19,38 @@ public class Main extends Application {
     //主场景
     BorderPane mainPane = new BorderPane();
     Scene scene = new Scene(mainPane, 600, 400);
-
     //加密解密按钮
     Button encBtn, decBtn;
     HBox bottomPane;
-
     //凯撒密钥
     Label caesarKeyHintLabel;
     TextField caesarKeyTextField;
     Button caesarRandomKeyButton;
     HBox ceasarPane;
-
     //代换表
     GridPane tablePane = new GridPane();
-
     //所有密钥的布局
     VBox keyPane;
-
     //明文密文输入
     TextArea leftText;
     TextArea rightText;
     GridPane textPane;
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        primaryStage.setTitle("加密/解密工具");
+
+        initKeyPane();
+        initTextFieldPane();
+        initDecodeButtonPane();
+
+        //将左中右布局加入到主布局中
+        mainPane.setTop(keyPane);
+        mainPane.setCenter(textPane);
+        mainPane.setBottom(bottomPane);
+    }
 
     /**
      * 设置输入密钥系列布局
@@ -125,9 +136,9 @@ public class Main extends Application {
     }
 
     /**
-     * 设置中间按钮布局
+     * 设置加解密按钮布局
      */
-    private void initCenterPane() {
+    private void initDecodeButtonPane() {
         //加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
@@ -140,22 +151,6 @@ public class Main extends Application {
         bottomPane.getChildren().add(decBtn);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setTitle("加密/解密工具");
-
-        initKeyPane();
-        initTextFieldPane();
-        initCenterPane();
-
-        //将左中右布局加入到主布局中
-        mainPane.setTop(keyPane);
-        mainPane.setCenter(textPane);
-        mainPane.setBottom(bottomPane);
-    }
-
     /**
      * 设置加密按钮
      *
@@ -165,8 +160,7 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void setEncBtn(Button encButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        encButton.setText("→→\n加密\n→→");
-        encButton.setMinSize(50, 80);
+        encButton.setText("→→\t加密\t→→");
 
         encButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
@@ -188,8 +182,7 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void setDecBtn(Button decButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        decButton.setText("←←\n解密\n←←");
-        decButton.setMinSize(50, 80);
+        decButton.setText("←←\t解密\t←←");
 
         decButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
