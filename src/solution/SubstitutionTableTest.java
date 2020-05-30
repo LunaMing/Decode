@@ -66,7 +66,16 @@ public class SubstitutionTableTest {
         Assert.assertEquals(cipherStr, "bbcdefg hijklmn, opq. Rst? uvwxyz! 2333");
     }
 
+    //"abcdefg hijklmn, opq. Rst? uvwxyz! 2333"<-"bbcdefg hijklmn, opq. Rst? uvwxyz! 2333"
     @Test
     public void decrypt() {
+        //密文
+        String cipherStr = "bbcdefg hijklmn, opq. Rst? uvwxyz! 2333";
+        //明文
+        String plainStr;
+        //解密
+        cipherStr = substitutionTable.decrypt(cipherStr);
+        //验证
+        Assert.assertEquals(cipherStr, "abcdefg hijklmn, opq. Rst? uvwxyz! 2333");
     }
 }
