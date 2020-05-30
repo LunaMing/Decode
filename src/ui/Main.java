@@ -19,22 +19,21 @@ public class Main extends Application {
     //主场景
     BorderPane mainPane = new BorderPane();
     Scene scene = new Scene(mainPane, 600, 400);
-    //加密解密按钮
-    Button encBtn, decBtn;
-    HBox bottomPane;
     //凯撒密钥
     Label caesarKeyHintLabel;
     TextField caesarKeyTextField;
     Button caesarRandomKeyButton;
-    HBox caesarPane;
-    //代换表
-    GridPane tablePane = new GridPane();
-    //所有密钥的布局
-    VBox keyPane;
     //明文密文输入
     TextArea leftText;
     TextArea rightText;
-    GridPane textPane;
+    //加密解密按钮
+    Button encBtn, decBtn;
+    //布局
+    HBox caesarPane = new HBox();
+    GridPane tablePane = new GridPane();
+    VBox keyPane = new VBox();
+    GridPane textPane = new GridPane();
+    HBox bottomPane = new HBox();
 
     @Override
     public void start(Stage primaryStage) {
@@ -66,8 +65,7 @@ public class Main extends Application {
         //随机生成密钥的按钮
         caesarRandomKeyButton = new Button("随机生成");
         caesarRandomKeyButton.setOnAction(event -> getRandomOffset(caesarKeyTextField));
-
-        caesarPane = new HBox();
+        //布局
         caesarPane.getChildren().add(caesarKeyHintLabel);
         caesarPane.getChildren().add(caesarKeyTextField);
         caesarPane.getChildren().add(caesarRandomKeyButton);
@@ -76,7 +74,7 @@ public class Main extends Application {
         Label tableHintLabel;
         tableHintLabel = new Label();
         tableHintLabel.setText("代换表");
-
+        //初始化表内容
         Label label;
         TextField textField;
         char ch;
@@ -110,8 +108,7 @@ public class Main extends Application {
             tablePane.add(label, i, 4);
             tablePane.add(textField, i, 5);
         }
-
-        keyPane = new VBox();
+        //布局
         keyPane.getChildren().add(caesarPane);
         keyPane.getChildren().add(tableHintLabel);
         keyPane.getChildren().add(tablePane);
@@ -128,7 +125,6 @@ public class Main extends Application {
         leftText = new TextArea("abc");
         rightText = new TextArea();
         //布局
-        textPane = new GridPane();
         textPane.add(leftLabel, 0, 0);
         textPane.add(rightLabel, 1, 0);
         textPane.add(leftText, 0, 1);
@@ -147,7 +143,6 @@ public class Main extends Application {
         setEncBtn(encBtn, caesarKeyTextField, rightText, leftText);
         setDecBtn(decBtn, caesarKeyTextField, rightText, leftText);
         //布局
-        bottomPane = new HBox();
         bottomPane.setSpacing(200);
         bottomPane.getChildren().add(encBtn);
         bottomPane.getChildren().add(decBtn);
