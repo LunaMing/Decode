@@ -61,7 +61,7 @@ public class Main extends Application {
         caesarKeyTextField = new TextField("0");
         //随机生成密钥的按钮
         Button caesarRandomKeyButton = new Button("随机生成");
-        caesarRandomKeyButton.setOnAction(event -> getRandomOffset());
+        caesarRandomKeyButton.setOnAction(event -> nextRandomKey());
         //布局
         HBox caesarPane = new HBox();
         caesarPane.getChildren().add(caesarKeyHintLabel);
@@ -185,7 +185,7 @@ public class Main extends Application {
     /**
      * 随机生成密钥
      */
-    private void getRandomOffset() {
+    private void nextRandomKey() {
         //生成随机数
         Random rand = new Random();
         int key = rand.nextInt(25);
