@@ -115,7 +115,7 @@ public class Main extends Application {
         Label leftLabel = new Label("明文");
         Label rightLabel = new Label("密文");
         //文本框
-        plainTextArea = new TextArea("abc");
+        plainTextArea = new TextArea("abcDEF");
         cipherTextArea = new TextArea();
         //布局
         textPane.add(leftLabel, 0, 0);
