@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class SubstitutionTable {
     HashMap<Character, Character> keyTable;
 
-    SubstitutionTable(HashMap<Character, Character> keyTable) {
+    public SubstitutionTable(HashMap<Character, Character> keyTable) {
         this.keyTable = keyTable;
     }
 

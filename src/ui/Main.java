@@ -12,8 +12,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import solution.Caesar;
+import solution.SubstitutionTable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +26,7 @@ public class Main extends Application {
     //凯撒密钥
     TextField caesarKeyTextField;
     //代换表密钥
+    List<Label> subTableKeyLabel = new ArrayList<>();
     List<TextField> subTableKeyTextField = new ArrayList<>();
     //明文密文输入
     TextArea plainTextArea, cipherTextArea;
@@ -94,10 +97,11 @@ public class Main extends Application {
             String str = String.valueOf(ch);
             label = new Label(str);
             textField = new TextField(str);
+            subTableKeyLabel.add(label);
             subTableKeyTextField.add(textField);
             int n = i / 26 * 2;
             int m = i % 26;
-            subTablePane.add(label, m, n);
+            subTablePane.add(subTableKeyLabel.get(i), m, n);
             subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
         }
 
@@ -133,7 +137,7 @@ public class Main extends Application {
         decryptButton = new Button();
         encryptButton.setText("→→\t加密\t→→");
         decryptButton.setText("←←\t解密\t←←");
-        setEncBtn(encryptButton, caesarKeyTextField, cipherTextArea, plainTextArea);
+        encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
         setDecBtn(decryptButton, caesarKeyTextField, cipherTextArea, plainTextArea);
         //布局
         encDecButtonPane.getChildren().add(encryptButton);
@@ -143,13 +147,11 @@ public class Main extends Application {
     /**
      * 设置加密动作
      *
-     * @param encButton      要设置为“加密”的按钮
-     * @param keyTextArea    密钥的文本框
      * @param cipherTextArea 密文的文本框
      * @param plainTextArea  明文的文本框
      */
-    private void setEncBtn(Button encButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        encButton.setOnAction(event -> {
+    private void encryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
+        /*encButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
             int key = Math.abs(tempInt) % 26;
             String keyStr = String.valueOf(key);
@@ -158,7 +160,23 @@ public class Main extends Application {
             String cipherText = new Caesar(key).encrypt(plainText);//凯撒密码
             cipherTextArea.setText(cipherText);
             caesarSetTable(key);
-        });
+        });*/
+        //获取明文
+        String plainText = plainTextArea.getText();
+        //初始化代换表
+        HashMap<Character, Character> hashMap = new HashMap();
+        String s;
+        Character k, v;
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            s = subTableKeyLabel.get(i).getText();
+            k = s.charAt(0);
+            s = subTableKeyTextField.get(i).getText();
+            v = s.charAt(0);
+            hashMap.put(k, v);
+        }
+        //加密
+        String cipherText = new SubstitutionTable(hashMap).encrypt(plainText);
+        cipherTextArea.setText(cipherText);
     }
 
     /**
