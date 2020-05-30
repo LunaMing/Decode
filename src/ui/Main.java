@@ -157,6 +157,7 @@ public class Main extends Application {
             String plainText = plainTextArea.getText();
             String cipherText = new Caesar(key).encrypt(plainText);//凯撒密码
             cipherTextArea.setText(cipherText);
+            caesarSetTable(key);
         });
     }
 
@@ -177,6 +178,7 @@ public class Main extends Application {
             String cipherText = cipherTextArea.getText();
             String plainText = new Caesar(offset).decrypt(cipherText);//凯撒密码
             plainTextArea.setText(plainText);
+            caesarSetTable(offset);
         });
     }
 
