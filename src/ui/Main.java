@@ -26,7 +26,7 @@ public class Main extends Application {
     Label caesarKeyHintLabel;
     TextField caesarKeyTextField;
     Button caesarRandomKeyButton;
-    HBox ceasarPane;
+    HBox caesarPane;
     //代换表
     GridPane tablePane = new GridPane();
     //所有密钥的布局
@@ -67,10 +67,10 @@ public class Main extends Application {
         caesarRandomKeyButton = new Button("随机生成");
         caesarRandomKeyButton.setOnAction(event -> getRandomOffset(caesarKeyTextField));
 
-        ceasarPane = new HBox();
-        ceasarPane.getChildren().add(caesarKeyHintLabel);
-        ceasarPane.getChildren().add(caesarKeyTextField);
-        ceasarPane.getChildren().add(caesarRandomKeyButton);
+        caesarPane = new HBox();
+        caesarPane.getChildren().add(caesarKeyHintLabel);
+        caesarPane.getChildren().add(caesarKeyTextField);
+        caesarPane.getChildren().add(caesarRandomKeyButton);
 
         //代换表
         Label tableHintLabel;
@@ -112,7 +112,7 @@ public class Main extends Application {
         }
 
         keyPane = new VBox();
-        keyPane.getChildren().add(ceasarPane);
+        keyPane.getChildren().add(caesarPane);
         keyPane.getChildren().add(tableHintLabel);
         keyPane.getChildren().add(tablePane);
     }
