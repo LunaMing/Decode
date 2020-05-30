@@ -22,6 +22,7 @@ public class SubstitutionTable {
         Character tempPlainChar;
         //密文的某一位
         Character tempCipherChar;
+        //根据代换表逐位替换
         for (int i = 0; i < plaintext.length(); i++) {
             tempPlainChar = plaintext.charAt(i);
             if (keyTable.get(tempPlainChar) != null) {
@@ -43,6 +44,29 @@ public class SubstitutionTable {
      * @return 明文
      */
     public String decrypt(String ciphertext) {
-        return "";
+        //要生成的明文
+        String plaintext = "";
+        //明文的某一位
+        Character tempPlainChar;
+        //密文的某一位
+        Character tempCipherChar;
+        //反转代换表
+        HashMap<Character, Character> reverseMap = new HashMap<>();
+        for (Character key : keyTable.keySet()) {
+            reverseMap.put(keyTable.get(key), key);
+        }
+        //根据代换表逐位替换
+        for (int i = 0; i < ciphertext.length(); i++) {
+            tempCipherChar = ciphertext.charAt(i);
+            if (reverseMap.get(tempCipherChar) != null) {
+                //代换表里面有的字符，就替换掉
+                tempPlainChar = reverseMap.get(tempCipherChar);
+                plaintext += tempPlainChar;
+            } else {
+                //没有的字符就保持原状
+                plaintext += tempCipherChar;
+            }
+        }
+        return plaintext;
     }
 }

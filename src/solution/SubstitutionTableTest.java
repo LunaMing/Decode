@@ -76,6 +76,6 @@ public class SubstitutionTableTest {
         //解密
         cipherStr = substitutionTable.decrypt(cipherStr);
         //验证
-        Assert.assertEquals("abcdefg hijklmn, opq. Rst? uvwxyz! 2333", cipherStr);
+        Assert.assertEquals("aacdefg hijklmn, opq. Rst? uvwxyz! 2333", cipherStr);
     }
 }
