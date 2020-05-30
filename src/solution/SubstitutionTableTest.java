@@ -12,10 +12,38 @@ public class SubstitutionTableTest {
 
     @Before
     public void setUp() {
-        //生成代换表
         HashMap<Character, Character> map = new HashMap<>();
+        //初始化代换表
         map.put('a', 'b');
         map.put('b', 'a');
+        map.put('A', 'B');
+        map.put('B', 'A');
+        //小写->大写
+        char ch;
+        char bigCh;
+        ch = 'c';
+        bigCh = 'C';
+        while (ch <= 'z') {
+            map.put(ch, bigCh);
+            ch++;
+            bigCh++;
+        }
+        //大写->小写
+        ch = 'C';
+        bigCh = 'c';
+        while (ch <= 'Z') {
+            map.put(ch, bigCh);
+            ch++;
+            bigCh++;
+        }
+        //数字
+        ch = '0';
+        bigCh = '1';
+        while (ch <= '8') {
+            map.put(ch, bigCh);
+            ch++;
+            bigCh++;
+        }
         //初始化要测试的类
         substitutionTable = new SubstitutionTable(map);
     }
@@ -37,26 +65,32 @@ public class SubstitutionTableTest {
     @Test
     public void encryptString() {
         //明文
-        String plainStr = "aaa";
+        String plainStr = "aAa";
         //验证
-        Assert.assertEquals("bbb", substitutionTable.encrypt(plainStr));
+        Assert.assertEquals("bBb", substitutionTable.encrypt(plainStr));
     }
 
-    //"abcdefg hijklmn, opq. Rst? uvwxyz! 2333"->"bacdefg hijklmn, opq. Rst? uvwxyz! 2333"
+    //"abcdefg hijklmn, opq. Rst? uvwxyz! 2333"->"baCDEFG HIJKLMN, OPQ. RST? UVWXYZ! 2333"
     @Test
-    public void encryptStringWithOtherWords() {
+    public void encryptAndDecryptWithOtherWords() {
         //明文
         String plainStr = "abcdefg hijklmn, opq. Rst? uvwxyz! 2333";
+        //加密
+        String cipherStr = substitutionTable.encrypt(plainStr);
         //验证
-        Assert.assertEquals("bacdefg hijklmn, opq. Rst? uvwxyz! 2333", substitutionTable.encrypt(plainStr));
+        Assert.assertEquals("baCDEFG HIJKLMN, OPQ. rST? UVWXYZ! 3444", cipherStr);
+        //解密
+        plainStr = substitutionTable.decrypt(cipherStr);
+        //验证
+        Assert.assertEquals("abcdefg hijklmn, opq. Rst? uvwxyz! 2333", plainStr);
     }
 
-    //"abcdefg hijklmn, opq. Rst? uvwxyz! 2333"<-"bacdefg hijklmn, opq. Rst? uvwxyz! 2333"
+    //"ab"<-"ba"
     @Test
-    public void decrypt() {
+    public void decryptString() {
         //密文
-        String cipherStr = "bacdefg hijklmn, opq. Rst? uvwxyz! 2333";
+        String cipherStr = "ba";
         //验证
-        Assert.assertEquals("abcdefg hijklmn, opq. Rst? uvwxyz! 2333", substitutionTable.decrypt(cipherStr));
+        Assert.assertEquals("ab", substitutionTable.decrypt(cipherStr));
     }
 }
