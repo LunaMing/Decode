@@ -31,7 +31,6 @@ public class Main extends Application {
     //明文密文输入
     Label leftLabel, rightLabel;
     GridPane leftPane, rightPane;
-    Button leftPaste, leftCopy, rightPaste, rightCopy;
     TextArea leftText, rightText;
 
     @Override
@@ -65,27 +64,19 @@ public class Main extends Application {
         leftLabel = new Label(plainTextHint + inputHintLabel_back);
         rightLabel = new Label(cipherTextHint + inputHintLabel_back);
 
-        //左文本框和复制粘贴按钮
-        leftText = new TextArea("a");
-        leftCopy = new Button();
-        setCopyButton(leftCopy, leftText);
-        leftPaste = new Button();
-        setPasteButton(leftPaste, leftText);
-        //右文本框和复制粘贴按钮
+        //文本框
+        leftText = new TextArea("abc");
         rightText = new TextArea();
-        rightCopy = new Button();
-        setCopyButton(rightCopy, rightText);
-        rightPaste = new Button();
-        setPasteButton(rightPaste, rightText);
 
         //左边布局
         leftPane = new GridPane();
         leftPane.setPadding(new Insets(20, 10, 20, 5));
-        setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
         //右边布局
         rightPane = new GridPane();
         rightPane.setPadding(new Insets(20, 5, 20, 10));
-        setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
+
+        setAsidePane(leftPane, leftLabel, leftText);
+        setAsidePane(rightPane, rightLabel, rightText);
 
         //中间加密解密的按钮
         encBtn = new Button();
@@ -109,24 +100,14 @@ public class Main extends Application {
     /**
      * 设置输入明文密文的布局
      *
-     * @param pane        设置的布局
-     * @param pasteButton 粘贴按钮
-     * @param copyButton  复制按钮
-     * @param label       文本标签，指示文本框应该填写的内容
-     * @param textArea    文本框
+     * @param pane     设置的布局
+     * @param label    文本标签，指示文本框应该填写的内容
+     * @param textArea 文本框
      */
-    private void setAsidePane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
-
-        GridPane bottomPane = new GridPane();
-        bottomPane.setHgap(20);
-        bottomPane.add(pasteButton, 0, 0);
-        bottomPane.add(copyButton, 1, 0);
-        bottomPane.setAlignment(Pos.CENTER);
-
+    private void setAsidePane(GridPane pane, Label label, TextArea textArea) {
         pane.setHgap(20);
         pane.add(label, 0, 0);
         pane.add(textArea, 0, 1);
-        pane.add(bottomPane, 0, 2);
     }
 
     /**
@@ -172,34 +153,6 @@ public class Main extends Application {
             String cipherText = cipherTextArea.getText();
             String plainText = new Caesar(offset).decrypt(cipherText);//凯撒密码
             plainTextArea.setText(plainText);
-        });
-    }
-
-    /**
-     * 设置粘贴按钮
-     *
-     * @param pasteButton 要设置为“粘贴”的按钮
-     * @param textarea    要绑定的文本框，设置后完成后，点击按钮，会将文本粘贴到这个文本框里面
-     */
-    private void setPasteButton(Button pasteButton, TextArea textarea) {
-        pasteButton.setText("粘贴到此处");
-        pasteButton.setOnAction(event -> {
-            textarea.clear();
-            textarea.paste();
-        });
-    }
-
-    /**
-     * 设置复制按钮
-     *
-     * @param copyButton 要设置为“复制”的按钮
-     * @param textarea   要绑定的文本框，设置后完成后，点击按钮，会将这个文本框里面的文字复制出来
-     */
-    private void setCopyButton(Button copyButton, TextArea textarea) {
-        copyButton.setText("从此处复制");
-        copyButton.setOnAction(event -> {
-            textarea.selectAll();
-            textarea.copy();
         });
     }
 
