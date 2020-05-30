@@ -25,14 +25,8 @@ public class SubstitutionTable {
         //根据代换表逐位替换
         for (int i = 0; i < plaintext.length(); i++) {
             tempPlainChar = plaintext.charAt(i);
-            if (keyTable.get(tempPlainChar) != null) {
-                //代换表里面有的字符，就替换掉
-                tempCipherChar = keyTable.get(tempPlainChar);
-                ciphertext += tempCipherChar;
-            } else {
-                //没有的字符就保持原状
-                ciphertext += tempPlainChar;
-            }
+            tempCipherChar = keyTable.getOrDefault(tempPlainChar, tempPlainChar);
+            ciphertext += tempCipherChar;
         }
         return ciphertext;
     }
@@ -58,14 +52,8 @@ public class SubstitutionTable {
         //根据代换表逐位替换
         for (int i = 0; i < ciphertext.length(); i++) {
             tempCipherChar = ciphertext.charAt(i);
-            if (reverseMap.get(tempCipherChar) != null) {
-                //代换表里面有的字符，就替换掉
-                tempPlainChar = reverseMap.get(tempCipherChar);
-                plaintext += tempPlainChar;
-            } else {
-                //没有的字符就保持原状
-                plaintext += tempCipherChar;
-            }
+            tempPlainChar = reverseMap.getOrDefault(tempCipherChar, tempCipherChar);
+            plaintext += tempPlainChar;
         }
         return plaintext;
     }
