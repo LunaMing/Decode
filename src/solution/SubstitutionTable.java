@@ -16,7 +16,11 @@ public class SubstitutionTable {
      * @return 密文
      */
     public String encrypt(String plaintext) {
-        return "";
+        String ciphertext = "";
+        Character tempPlainChar = plaintext.charAt(0);
+        Character tempCipherChar = keyTable.get(tempPlainChar);
+        ciphertext += tempCipherChar;
+        return ciphertext;
     }
 
     /**
