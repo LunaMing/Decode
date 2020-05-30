@@ -53,6 +53,19 @@ public class SubstitutionTableTest {
         Assert.assertEquals(cipherStr, "bbb");
     }
 
+    //"abcdefg hijklmn, opq. Rst? uvwxyz! 2333"->"bbcdefg hijklmn, opq. Rst? uvwxyz! 2333"
+    @Test
+    public void encryptStringWithOtherWords() {
+        //明文
+        String plainStr = "abcdefg hijklmn, opq. Rst? uvwxyz! 2333";
+        //密文
+        String cipherStr;
+        //加密
+        cipherStr = substitutionTable.encrypt(plainStr);
+        //验证
+        Assert.assertEquals(cipherStr, "bbcdefg hijklmn, opq. Rst? uvwxyz! 2333");
+    }
+
     @Test
     public void decrypt() {
     }
