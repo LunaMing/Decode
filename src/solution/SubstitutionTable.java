@@ -16,10 +16,17 @@ public class SubstitutionTable {
      * @return 密文
      */
     public String encrypt(String plaintext) {
+        //要生成的密文
         String ciphertext = "";
-        Character tempPlainChar = plaintext.charAt(0);
-        Character tempCipherChar = keyTable.get(tempPlainChar);
-        ciphertext += tempCipherChar;
+        //明文的某一位
+        Character tempPlainChar;
+        //密文的某一位
+        Character tempCipherChar;
+        for (int i = 0; i < plaintext.length(); i++) {
+            tempPlainChar = plaintext.charAt(i);
+            tempCipherChar = keyTable.get(tempPlainChar);
+            ciphertext += tempCipherChar;
+        }
         return ciphertext;
     }
 
