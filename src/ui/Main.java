@@ -1,14 +1,15 @@
 package ui;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import solution.Caesar;
 
@@ -16,46 +17,93 @@ import java.util.Random;
 
 public class Main extends Application {
     //主场景
-    GridPane mainPane = new GridPane();
-    Scene scene = new Scene(mainPane, 600, 600);
+    BorderPane mainPane = new BorderPane();
+    Scene scene = new Scene(mainPane, 600, 400);
 
-    //中间加密解密按钮
+    //加密解密按钮
     Button encBtn, decBtn;
-    GridPane centerPane;
+    HBox bottomPane;
 
-    //密钥生成按钮
+    //凯撒密钥
     Label caesarKeyHintLabel;
     TextField caesarKeyTextField;
     Button caesarRandomKeyButton;
-    GridPane keyPane;
+    HBox ceasarPane;
+
+    //代换表
+    GridPane tablePane = new GridPane();
+
+    //所有密钥的布局
+    VBox keyPane;
 
     //明文密文输入
-    Label leftLabel, rightLabel;
-    GridPane leftPane, rightPane;
-    TextArea leftText, rightText;
+    TextArea leftText;
+    TextArea rightText;
+    GridPane textPane;
 
     /**
      * 设置输入密钥系列布局
      */
     private void initKeyPane() {
-        //设置输入密钥提示标签，右对齐
+        //凯撒
+        //设置输入密钥提示标签
         caesarKeyHintLabel = new Label();
         caesarKeyHintLabel.setMaxWidth(Double.MAX_VALUE);
-        caesarKeyHintLabel.setAlignment(Pos.CENTER_RIGHT);
-        caesarKeyHintLabel.setText("凯撒密码的密钥（0，1，2 ... 25）：");
-
+        caesarKeyHintLabel.setText("凯撒密码的密钥（0，1，2 ... 25）");
         //密钥输入框
         caesarKeyTextField = new TextField("1");
-
         //随机生成密钥的按钮
         caesarRandomKeyButton = new Button("随机生成");
         caesarRandomKeyButton.setOnAction(event -> getRandomOffset(caesarKeyTextField));
 
-        //密钥系列加入到主布局
-        keyPane = new GridPane();
-        keyPane.add(caesarKeyHintLabel, 0, 0);
-        keyPane.add(caesarKeyTextField, 0, 1);
-        keyPane.add(caesarRandomKeyButton, 0, 2);
+        ceasarPane = new HBox();
+        ceasarPane.getChildren().add(caesarKeyHintLabel);
+        ceasarPane.getChildren().add(caesarKeyTextField);
+        ceasarPane.getChildren().add(caesarRandomKeyButton);
+
+        //代换表
+        Label tableHintLabel;
+        tableHintLabel = new Label();
+        tableHintLabel.setText("代换表");
+
+        Label label;
+        TextField textField;
+        char ch;
+        //小写
+        ch = 'a';
+        for (int i = 0; i < 26; i++) {
+            String str = String.valueOf(ch);
+            ch++;
+            label = new Label(str);
+            textField = new TextField(str);
+            tablePane.add(label, i, 0);
+            tablePane.add(textField, i, 1);
+        }
+        //大写
+        ch = 'A';
+        for (int i = 0; i < 26; i++) {
+            String str = String.valueOf(ch);
+            ch++;
+            label = new Label(str);
+            textField = new TextField(str);
+            tablePane.add(label, i, 2);
+            tablePane.add(textField, i, 3);
+        }
+        //数字
+        ch = '0';
+        for (int i = 0; i < 10; i++) {
+            String str = String.valueOf(ch);
+            ch++;
+            label = new Label(str);
+            textField = new TextField(str);
+            tablePane.add(label, i, 4);
+            tablePane.add(textField, i, 5);
+        }
+
+        keyPane = new VBox();
+        keyPane.getChildren().add(ceasarPane);
+        keyPane.getChildren().add(tableHintLabel);
+        keyPane.getChildren().add(tablePane);
     }
 
     /**
@@ -63,43 +111,33 @@ public class Main extends Application {
      */
     private void initTextFieldPane() {
         //明文密文输入提示
-        String plainTextHint = "明文";
-        String cipherTextHint = "密文";
-        String inputHintLabel_back = "（仅限英文字母）：";
-        leftLabel = new Label(plainTextHint + inputHintLabel_back);
-        rightLabel = new Label(cipherTextHint + inputHintLabel_back);
-
+        Label leftLabel = new Label("明文");
+        Label rightLabel = new Label("密文");
         //文本框
         leftText = new TextArea("abc");
         rightText = new TextArea();
-
-        //左边布局
-        leftPane = new GridPane();
-        leftPane.setPadding(new Insets(20, 10, 20, 5));
-        //右边布局
-        rightPane = new GridPane();
-        rightPane.setPadding(new Insets(20, 5, 20, 10));
-
-        setAsidePane(leftPane, leftLabel, leftText);
-        setAsidePane(rightPane, rightLabel, rightText);
+        //布局
+        textPane = new GridPane();
+        textPane.add(leftLabel, 0, 0);
+        textPane.add(rightLabel, 1, 0);
+        textPane.add(leftText, 0, 1);
+        textPane.add(rightText, 1, 1);
     }
 
     /**
      * 设置中间按钮布局
      */
     private void initCenterPane() {
-        //中间加密解密的按钮
+        //加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
         setEncBtn(encBtn, caesarKeyTextField, rightText, leftText);
         setDecBtn(decBtn, caesarKeyTextField, rightText, leftText);
-
-        //中间布局
-        centerPane = new GridPane();
-        centerPane.setPadding(new Insets(30, 5, 30, 5));
-        centerPane.setVgap(20);
-        centerPane.add(encBtn, 0, 0);
-        centerPane.add(decBtn, 0, 1);
+        //布局
+        bottomPane = new HBox();
+        bottomPane.setSpacing(200);
+        bottomPane.getChildren().add(encBtn);
+        bottomPane.getChildren().add(decBtn);
     }
 
     @Override
@@ -113,23 +151,9 @@ public class Main extends Application {
         initCenterPane();
 
         //将左中右布局加入到主布局中
-        mainPane.add(keyPane,0,0);
-        mainPane.add(leftPane, 0, 1);
-        mainPane.add(centerPane, 1, 1);
-        mainPane.add(rightPane, 2, 1);
-    }
-
-    /**
-     * 设置输入明文密文的布局
-     *
-     * @param pane     设置的布局
-     * @param label    文本标签，指示文本框应该填写的内容
-     * @param textArea 文本框
-     */
-    private void setAsidePane(GridPane pane, Label label, TextArea textArea) {
-        pane.setHgap(20);
-        pane.add(label, 0, 0);
-        pane.add(textArea, 0, 1);
+        mainPane.setTop(keyPane);
+        mainPane.setCenter(textPane);
+        mainPane.setBottom(bottomPane);
     }
 
     /**
