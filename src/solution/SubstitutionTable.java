@@ -17,7 +17,7 @@ public class SubstitutionTable {
      */
     public String encrypt(String plaintext) {
         //要生成的密文
-        String ciphertext = "";
+        StringBuilder ciphertext = new StringBuilder();
         //明文的某一位
         Character tempPlainChar;
         //密文的某一位
@@ -26,9 +26,9 @@ public class SubstitutionTable {
         for (int i = 0; i < plaintext.length(); i++) {
             tempPlainChar = plaintext.charAt(i);
             tempCipherChar = keyTable.getOrDefault(tempPlainChar, tempPlainChar);
-            ciphertext += tempCipherChar;
+            ciphertext.append(tempCipherChar);
         }
-        return ciphertext;
+        return ciphertext.toString();
     }
 
     /**
@@ -39,7 +39,7 @@ public class SubstitutionTable {
      */
     public String decrypt(String ciphertext) {
         //要生成的明文
-        String plaintext = "";
+        StringBuilder plaintext = new StringBuilder();
         //明文的某一位
         Character tempPlainChar;
         //密文的某一位
@@ -53,8 +53,8 @@ public class SubstitutionTable {
         for (int i = 0; i < ciphertext.length(); i++) {
             tempCipherChar = ciphertext.charAt(i);
             tempPlainChar = reverseMap.getOrDefault(tempCipherChar, tempCipherChar);
-            plaintext += tempPlainChar;
+            plaintext.append(tempPlainChar);
         }
-        return plaintext;
+        return plaintext.toString();
     }
 }
