@@ -24,8 +24,8 @@ public class Main extends Application {
     TextField caesarKeyTextField;
     Button caesarRandomKeyButton;
     //明文密文输入
-    TextArea leftText;
-    TextArea rightText;
+    TextArea plainTextArea;
+    TextArea cipherTextArea;
     //加密解密按钮
     Button encBtn, decBtn;
     //布局
@@ -122,13 +122,13 @@ public class Main extends Application {
         Label leftLabel = new Label("明文");
         Label rightLabel = new Label("密文");
         //文本框
-        leftText = new TextArea("abc");
-        rightText = new TextArea();
+        plainTextArea = new TextArea("abc");
+        cipherTextArea = new TextArea();
         //布局
         textPane.add(leftLabel, 0, 0);
         textPane.add(rightLabel, 1, 0);
-        textPane.add(leftText, 0, 1);
-        textPane.add(rightText, 1, 1);
+        textPane.add(plainTextArea, 0, 1);
+        textPane.add(cipherTextArea, 1, 1);
     }
 
     /**
@@ -140,8 +140,8 @@ public class Main extends Application {
         decBtn = new Button();
         encBtn.setText("→→\t加密\t→→");
         decBtn.setText("←←\t解密\t←←");
-        setEncBtn(encBtn, caesarKeyTextField, rightText, leftText);
-        setDecBtn(decBtn, caesarKeyTextField, rightText, leftText);
+        setEncBtn(encBtn, caesarKeyTextField, cipherTextArea, plainTextArea);
+        setDecBtn(decBtn, caesarKeyTextField, cipherTextArea, plainTextArea);
         //布局
         bottomPane.setSpacing(200);
         bottomPane.getChildren().add(encBtn);
