@@ -23,15 +23,38 @@ public class Main extends Application {
     Button encBtn, decBtn;
     GridPane centerPane;
 
-    //随机密钥
-    Label keyHintLabel;
-    TextField keyTextField;
-    Button randomKeyButton;
+    //密钥生成按钮
+    Label caesarKeyHintLabel;
+    TextField caesarKeyTextField;
+    Button caesarRandomKeyButton;
 
     //明文密文输入
     Label leftLabel, rightLabel;
     GridPane leftPane, rightPane;
     TextArea leftText, rightText;
+
+    /**
+     * 设置输入密钥系列布局
+     */
+    private void initKeyPane() {
+        //设置输入密钥提示标签，右对齐
+        caesarKeyHintLabel = new Label();
+        caesarKeyHintLabel.setMaxWidth(Double.MAX_VALUE);
+        caesarKeyHintLabel.setAlignment(Pos.CENTER_RIGHT);
+        caesarKeyHintLabel.setText("凯撒密码的密钥（0，1，2 ... 25）：");
+
+        //密钥输入框
+        caesarKeyTextField = new TextField("1");
+
+        //随机生成密钥的按钮
+        caesarRandomKeyButton = new Button("随机生成");
+        caesarRandomKeyButton.setOnAction(event -> getRandomOffset(caesarKeyTextField));
+
+        //密钥系列加入到主布局
+        mainPane.add(caesarKeyHintLabel, 0, 0);
+        mainPane.add(caesarKeyTextField, 1, 0);
+        mainPane.add(caesarRandomKeyButton, 2, 0);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -39,24 +62,8 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setTitle("加密/解密工具");
 
-        //设置输入密钥提示标签，右对齐
-        keyHintLabel = new Label();
-        keyHintLabel.setMaxWidth(Double.MAX_VALUE);
-        keyHintLabel.setAlignment(Pos.CENTER_RIGHT);
-        keyHintLabel.setText("凯撒密码的密钥（0，1，2 ... 25）：");
-
-        //密钥输入框
-        keyTextField = new TextField("1");
-
-        //随机生成密钥的按钮
-        randomKeyButton = new Button("随机生成");
-        randomKeyButton.setOnAction(event -> getRandomOffset(keyTextField));
-
-        //密钥系列加入到主布局
-        mainPane.add(keyHintLabel, 0, 0);
-        mainPane.add(keyTextField, 1, 0);
-        mainPane.add(randomKeyButton, 2, 0);
-
+        initKeyPane();
+        
         //明文密文输入提示
         String plainTextHint = "明文";
         String cipherTextHint = "密文";
@@ -81,8 +88,8 @@ public class Main extends Application {
         //中间加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
-        setEncBtn(encBtn, keyTextField, rightText, leftText);
-        setDecBtn(decBtn, keyTextField, rightText, leftText);
+        setEncBtn(encBtn, caesarKeyTextField, rightText, leftText);
+        setDecBtn(decBtn, caesarKeyTextField, rightText, leftText);
 
         //中间布局
         centerPane = new GridPane();
