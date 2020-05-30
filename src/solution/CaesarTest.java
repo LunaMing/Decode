@@ -1,6 +1,7 @@
 package solution;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,8 +9,12 @@ import static org.junit.Assert.*;
 
 public class CaesarTest {
 
+    Caesar caesar;
+
     @Before
     public void setUp() throws Exception {
+        int offset = 1;//a->b
+        caesar = new Caesar(offset);
     }
 
     @After
@@ -18,6 +23,14 @@ public class CaesarTest {
 
     @Test
     public void encrypt() {
+        //明文
+        String plainStr = "a";
+        //密文
+        String cipherStr = "b";
+        //加密
+        cipherStr = caesar.encrypt(plainStr);
+        //验证加密成果
+        Assert.assertEquals(cipherStr, "b");
     }
 
     @Test
