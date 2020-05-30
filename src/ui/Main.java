@@ -82,15 +82,10 @@ public class Main extends Application {
         setAsidePane(rightPane, rightLabel, rightText);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setTitle("加密/解密工具");
-
-        initKeyPane();
-        initTextFieldPane();
-
+    /**
+     * 设置中间按钮布局
+     */
+    private void initCenterPane() {
         //中间加密解密的按钮
         encBtn = new Button();
         decBtn = new Button();
@@ -103,6 +98,17 @@ public class Main extends Application {
         centerPane.setVgap(20);
         centerPane.add(encBtn, 0, 0);
         centerPane.add(decBtn, 0, 1);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        primaryStage.setTitle("加密/解密工具");
+
+        initKeyPane();
+        initTextFieldPane();
+        initCenterPane();
 
         //将左中右布局加入到主布局中
         mainPane.add(leftPane, 0, 1);
