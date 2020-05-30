@@ -190,6 +190,13 @@ public class Main extends Application {
         //给凯撒密码的文本框赋值
         caesarKeyTextField.setText(String.valueOf(key));
         //给代换表赋值
+        caesarSetTable(key);
+    }
+
+    /**
+     * 用凯撒密码设置代换表
+     */
+    private void caesarSetTable(int key) {
         for (int i = 0; i < 26 + 26 + 10; i++) {
             char nCh;
             int index = i;
