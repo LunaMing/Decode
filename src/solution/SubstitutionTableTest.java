@@ -27,16 +27,30 @@ public class SubstitutionTableTest {
     public void tearDown() throws Exception {
     }
 
+    //"a"->"b"
     @Test
-    public void encrypt() {
+    public void encryptOneChar() {
         //明文
         String plainStr = "a";
         //密文
-        String cipherStr = "b";
+        String cipherStr;
         //加密
         cipherStr = substitutionTable.encrypt(plainStr);
         //验证
         Assert.assertEquals(cipherStr, "b");
+    }
+
+    //"aaa"->"bbb"
+    @Test
+    public void encryptString() {
+        //明文
+        String plainStr = "aaa";
+        //密文
+        String cipherStr;
+        //加密
+        cipherStr = substitutionTable.encrypt(plainStr);
+        //验证
+        Assert.assertEquals(cipherStr, "bbb");
     }
 
     @Test
