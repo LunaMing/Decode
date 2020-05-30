@@ -37,7 +37,7 @@ public class SubstitutionTableTest {
         //加密
         cipherStr = substitutionTable.encrypt(plainStr);
         //验证
-        Assert.assertEquals(cipherStr, "b");
+        Assert.assertEquals("b", cipherStr);
     }
 
     //"aaa"->"bbb"
@@ -50,7 +50,7 @@ public class SubstitutionTableTest {
         //加密
         cipherStr = substitutionTable.encrypt(plainStr);
         //验证
-        Assert.assertEquals(cipherStr, "bbb");
+        Assert.assertEquals("bbb", cipherStr);
     }
 
     //"abcdefg hijklmn, opq. Rst? uvwxyz! 2333"->"bbcdefg hijklmn, opq. Rst? uvwxyz! 2333"
@@ -63,7 +63,7 @@ public class SubstitutionTableTest {
         //加密
         cipherStr = substitutionTable.encrypt(plainStr);
         //验证
-        Assert.assertEquals(cipherStr, "bbcdefg hijklmn, opq. Rst? uvwxyz! 2333");
+        Assert.assertEquals("bbcdefg hijklmn, opq. Rst? uvwxyz! 2333", cipherStr);
     }
 
     //"abcdefg hijklmn, opq. Rst? uvwxyz! 2333"<-"bbcdefg hijklmn, opq. Rst? uvwxyz! 2333"
@@ -76,6 +76,6 @@ public class SubstitutionTableTest {
         //解密
         cipherStr = substitutionTable.decrypt(cipherStr);
         //验证
-        Assert.assertEquals(cipherStr, "abcdefg hijklmn, opq. Rst? uvwxyz! 2333");
+        Assert.assertEquals("abcdefg hijklmn, opq. Rst? uvwxyz! 2333", cipherStr);
     }
 }
