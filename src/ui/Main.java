@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import solution.Caesar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Main extends Application {
@@ -21,6 +23,8 @@ public class Main extends Application {
     Scene scene = new Scene(mainPane, 700, 300);
     //凯撒密钥
     TextField caesarKeyTextField;
+    //代换表密钥
+    List<TextField> subTableKeyTextField = new ArrayList<>();
     //明文密文输入
     TextArea plainTextArea, cipherTextArea;
     //加密解密按钮
@@ -54,10 +58,10 @@ public class Main extends Application {
         //设置输入密钥提示标签
         Label caesarKeyHintLabel = new Label("凯撒密码的密钥（0，1，2 ... 25）");
         //密钥输入框
-        caesarKeyTextField = new TextField("1");
+        caesarKeyTextField = new TextField("0");
         //随机生成密钥的按钮
         Button caesarRandomKeyButton = new Button("随机生成");
-        caesarRandomKeyButton.setOnAction(event -> getRandomOffset(caesarKeyTextField));
+        caesarRandomKeyButton.setOnAction(event -> getRandomOffset());
         //布局
         HBox caesarPane = new HBox();
         caesarPane.getChildren().add(caesarKeyHintLabel);
@@ -74,35 +78,29 @@ public class Main extends Application {
         TextField textField;
         char ch;
         //小写
-        ch = 'a';
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            int index;
+            if (i < 26) {
+                ch = 'a';
+                index = i;
+            } else if (i < 26 + 26) {
+                ch = 'A';
+                index = i - 26;
+            } else {
+                ch = '0';
+                index = i - 26 - 26;
+            }
+            ch = (char) (ch + index);
             String str = String.valueOf(ch);
-            ch++;
             label = new Label(str);
             textField = new TextField(str);
-            subTablePane.add(label, i, 0);
-            subTablePane.add(textField, i, 1);
+            subTableKeyTextField.add(textField);
+            int n = i / 26 * 2;
+            int m = i % 26;
+            subTablePane.add(label, m, n);
+            subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
         }
-        //大写
-        ch = 'A';
-        for (int i = 0; i < 26; i++) {
-            String str = String.valueOf(ch);
-            ch++;
-            label = new Label(str);
-            textField = new TextField(str);
-            subTablePane.add(label, i, 2);
-            subTablePane.add(textField, i, 3);
-        }
-        //数字
-        ch = '0';
-        for (int i = 0; i < 10; i++) {
-            String str = String.valueOf(ch);
-            ch++;
-            label = new Label(str);
-            textField = new TextField(str);
-            subTablePane.add(label, i, 4);
-            subTablePane.add(textField, i, 5);
-        }
+
         //布局
         keyPane.getChildren().add(caesarPane);
         keyPane.getChildren().add(tableHintLabel);
@@ -184,13 +182,30 @@ public class Main extends Application {
 
     /**
      * 随机生成密钥
-     *
-     * @param offsetText 密钥放置的文本框
      */
-    private void getRandomOffset(TextField offsetText) {
+    private void getRandomOffset() {
+        //生成随机数
         Random rand = new Random();
-        int myOffsetKey = rand.nextInt(26);
-        offsetText.setText(String.valueOf(myOffsetKey));
+        int key = rand.nextInt(25);
+        //给凯撒密码的文本框赋值
+        caesarKeyTextField.setText(String.valueOf(key));
+        //给代换表赋值
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            char nCh;
+            int index = i;
+            if (i < 26) {
+                index = (index + key) % 26;
+                nCh = (char) ((int) 'a' + index);
+            } else if (i < 26 + 26) {
+                index = (index - 26 + key) % 26;
+                nCh = (char) ((int) 'A' + index);
+            } else {
+                index = (index - 26 - 26 + key) % 10;
+                nCh = (char) ((int) '0' + index);
+            }
+            String newText = String.valueOf(nCh);
+            subTableKeyTextField.get(i).setText(newText);
+        }
     }
 
     public static void main(String[] args) {
