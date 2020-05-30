@@ -56,14 +56,10 @@ public class Main extends Application {
         mainPane.add(caesarRandomKeyButton, 2, 0);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setTitle("加密/解密工具");
-
-        initKeyPane();
-        
+    /**
+     * 设置输入明文密文系列布局
+     */
+    private void initTextFieldPane() {
         //明文密文输入提示
         String plainTextHint = "明文";
         String cipherTextHint = "密文";
@@ -84,6 +80,16 @@ public class Main extends Application {
 
         setAsidePane(leftPane, leftLabel, leftText);
         setAsidePane(rightPane, rightLabel, rightText);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        primaryStage.setTitle("加密/解密工具");
+
+        initKeyPane();
+        initTextFieldPane();
 
         //中间加密解密的按钮
         encBtn = new Button();
