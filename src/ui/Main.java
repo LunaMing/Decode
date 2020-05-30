@@ -17,7 +17,7 @@ import java.util.Random;
 public class Main extends Application {
     //主场景
     GridPane mainPane = new GridPane();
-    Scene scene = new Scene(mainPane, 600, 250);
+    Scene scene = new Scene(mainPane, 600, 600);
 
     //中间加密解密按钮
     Button encBtn, decBtn;
@@ -27,6 +27,7 @@ public class Main extends Application {
     Label caesarKeyHintLabel;
     TextField caesarKeyTextField;
     Button caesarRandomKeyButton;
+    GridPane keyPane;
 
     //明文密文输入
     Label leftLabel, rightLabel;
@@ -51,9 +52,10 @@ public class Main extends Application {
         caesarRandomKeyButton.setOnAction(event -> getRandomOffset(caesarKeyTextField));
 
         //密钥系列加入到主布局
-        mainPane.add(caesarKeyHintLabel, 0, 0);
-        mainPane.add(caesarKeyTextField, 1, 0);
-        mainPane.add(caesarRandomKeyButton, 2, 0);
+        keyPane = new GridPane();
+        keyPane.add(caesarKeyHintLabel, 0, 0);
+        keyPane.add(caesarKeyTextField, 0, 1);
+        keyPane.add(caesarRandomKeyButton, 0, 2);
     }
 
     /**
@@ -111,6 +113,7 @@ public class Main extends Application {
         initCenterPane();
 
         //将左中右布局加入到主布局中
+        mainPane.add(keyPane,0,0);
         mainPane.add(leftPane, 0, 1);
         mainPane.add(centerPane, 1, 1);
         mainPane.add(rightPane, 2, 1);
