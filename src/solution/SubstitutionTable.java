@@ -24,8 +24,14 @@ public class SubstitutionTable {
         Character tempCipherChar;
         for (int i = 0; i < plaintext.length(); i++) {
             tempPlainChar = plaintext.charAt(i);
-            tempCipherChar = keyTable.get(tempPlainChar);
-            ciphertext += tempCipherChar;
+            if (keyTable.get(tempPlainChar) != null) {
+                //代换表里面有的字符，就替换掉
+                tempCipherChar = keyTable.get(tempPlainChar);
+                ciphertext += tempCipherChar;
+            } else {
+                //没有的字符就保持原状
+                ciphertext += tempPlainChar;
+            }
         }
         return ciphertext;
     }
