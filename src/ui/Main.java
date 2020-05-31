@@ -33,6 +33,8 @@ public class Main extends Application {
     TextArea plainTextArea, cipherTextArea;
     //加密解密按钮
     Button encryptButton, decryptButton;
+    //代换表按钮
+    Button keyInputButton, keyOutputButton;
     //布局
     VBox keyPane = new VBox();//密钥全布局
     GridPane textPane = new GridPane();//明文密文
@@ -130,19 +132,25 @@ public class Main extends Application {
     }
 
     /**
-     * 设置加解密按钮布局
+     * 设置底部按钮布局
      */
     private void initDecodeButtonPane() {
         //加密解密的按钮
-        encryptButton = new Button();
-        decryptButton = new Button();
-        encryptButton.setText("→→\t加密\t→→");
-        decryptButton.setText("←←\t解密\t←←");
+        encryptButton = new Button("→ 加密 →");
+        decryptButton = new Button("← 解密 ←");
         encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
         decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
+        //代换表相关按钮
+        keyInputButton = new Button("导入代换表");
+        keyOutputButton = new Button("导出代换表");
+        keyInputButton.setOnAction(event -> {
+            System.out.println("input");
+        });
+        keyOutputButton.setOnAction(event -> {
+            System.out.println("Output");
+        });
         //布局
-        encDecButtonPane.getChildren().add(encryptButton);
-        encDecButtonPane.getChildren().add(decryptButton);
+        encDecButtonPane.getChildren().addAll(encryptButton, decryptButton, keyInputButton, keyOutputButton);
     }
 
     /**
