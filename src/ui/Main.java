@@ -14,10 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import algorithm.SubstitutionTable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Main extends Application {
     //主场景
@@ -132,7 +129,19 @@ public class Main extends Application {
                 //如果明文是空的就不用分析了
                 plainFreqResult.setText("（请输入明文内容）");
             } else {
-                //todo
+                //分析
+                TreeMap<Character, Double> map = Frequency.countFrequency(plainText);
+                List<Character> list = Frequency.sort(plainText);
+                //将分析结果做成string
+                StringBuilder result = new StringBuilder();
+                for (Character key : list) {
+                    result.append(key);
+                    result.append("：");
+                    result.append(map.get(key));
+                    result.append("\n");
+                }
+                //放到label输出
+                plainFreqResult.setText(String.valueOf(result));
             }
         });
         cipherFreqButton.setOnAction(event -> {
