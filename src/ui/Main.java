@@ -149,7 +149,7 @@ public class Main extends Application {
      * 初始化代换表
      */
     private void initSubTable() {
-        HashMap hashMap = new HashMap();
+        HashMap<Character, Character> hashMap = new HashMap<>();
         String s;
         char k, v;
         for (int i = 0; i < 26 + 26 + 10; i++) {
