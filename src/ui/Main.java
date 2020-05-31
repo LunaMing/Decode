@@ -170,6 +170,7 @@ public class Main extends Application {
         encDecButtonPane.getChildren().addAll(plainTextInputButton, plainTextOutputButton,
                 cipherTextInputButton, cipherTextOutputButton,
                 encryptButton, decryptButton, keyInputButton, keyOutputButton);
+        encDecButtonPane.setSpacing(20);//设置按钮间距
     }
 
     /**
