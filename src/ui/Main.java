@@ -149,7 +149,19 @@ public class Main extends Application {
             if (cipherText.isEmpty()) {
                 cipherFreqResult.setText("（请输入密文内容）");
             } else {
-                //todo
+                //分析
+                TreeMap<Character, Double> map = Frequency.countFrequency(cipherText);
+                List<Character> list = Frequency.sort(cipherText);
+                //将分析结果做成string
+                StringBuilder result = new StringBuilder();
+                for (Character key : list) {
+                    result.append(key);
+                    result.append("：");
+                    result.append(map.get(key));
+                    result.append("\n");
+                }
+                //放到label输出
+                cipherFreqResult.setText(String.valueOf(result));
             }
         });
         //布局
