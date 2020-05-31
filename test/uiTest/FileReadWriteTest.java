@@ -22,18 +22,18 @@ public class FileReadWriteTest {
 
     @Test
     public void readTxtOneLine() {
-        String s = fileReadWrite.readTxt("res/test.txt");
+        String s = fileReadWrite.readTxt("resTest/test.txt");
         Assert.assertEquals("aabc", s);
     }
 
     @Test
     public void readTxtMoreLines() {
-        String s = fileReadWrite.readTxt("res/testWrite.txt");
+        String s = fileReadWrite.readTxt("resTest/testWrite.txt");
         Assert.assertEquals("aabcxyz", s);
     }
 
     @Test
     public void writeTxt() {
-        fileReadWrite.writeTxt("res/testWrite.txt", "aabc\nxyz");
+        fileReadWrite.writeTxt("resTest/testWrite.txt", "aabc\nxyz");
     }
 }
