@@ -1,5 +1,6 @@
 package ui;
 
+import algorithm.Frequency;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,17 +12,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import solution.SubstitutionTable;
+import algorithm.SubstitutionTable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Main extends Application {
     //主场景
     BorderPane mainPane = new BorderPane();
-    Scene scene = new Scene(mainPane, 700, 300);
+    Scene scene = new Scene(mainPane, 700, 700);
     //凯撒密钥
     TextField caesarKeyTextField;
     //代换表密钥
@@ -31,8 +29,6 @@ public class Main extends Application {
     SubstitutionTable subTable;
     //明文密文输入
     TextArea plainTextArea, cipherTextArea;
-    //加密解密按钮
-    Button encryptButton, decryptButton;
     //布局
     VBox keyPane = new VBox();//密钥全布局
     GridPane textPane = new GridPane();//明文密文
@@ -122,27 +118,146 @@ public class Main extends Application {
         //文本框
         plainTextArea = new TextArea("abcDEF");
         cipherTextArea = new TextArea();
+        //频率分析
+        Label plainFreqResult = new Label("（请点击按钮开始分析）");
+        Label cipherFreqResult = new Label("（请点击按钮开始分析）");
+        Button plainFreqButton = new Button("明文频率分析");
+        Button cipherFreqButton = new Button("密文频率分析");
+        plainFreqButton.setOnAction(event -> {
+            String plainText = plainTextArea.getText();
+            if (plainText.isEmpty()) {
+                //如果明文是空的就不用分析了
+                plainFreqResult.setText("（请输入明文内容）");
+            } else {
+                //分析
+                TreeMap<Character, Double> map = Frequency.countFrequency(plainText);
+                List<Character> list = Frequency.sort(plainText);
+                //将分析结果做成string
+                StringBuilder result = new StringBuilder();
+                for (Character key : list) {
+                    result.append("【");
+                    result.append(key);
+                    result.append("】：");
+                    result.append(map.get(key));
+                    result.append("\n");
+                }
+                //放到label输出
+                plainFreqResult.setText(String.valueOf(result));
+            }
+        });
+        cipherFreqButton.setOnAction(event -> {
+            String cipherText = cipherTextArea.getText();
+            if (cipherText.isEmpty()) {
+                cipherFreqResult.setText("（请输入密文内容）");
+            } else {
+                //分析
+                TreeMap<Character, Double> map;
+                map = Frequency.countFrequency(cipherText);
+                List<Character> list = Frequency.sort(cipherText);
+                //list->string
+                StringBuilder result = new StringBuilder();
+                for (Character key : list) {
+                    result.append("【");
+                    result.append(key);
+                    result.append("】：");
+                    result.append(map.get(key));
+                    result.append("\n");
+                }
+                //放到label输出
+                cipherFreqResult.setText(String.valueOf(result));
+            }
+        });
         //布局
         textPane.add(leftLabel, 0, 0);
         textPane.add(rightLabel, 1, 0);
         textPane.add(plainTextArea, 0, 1);
         textPane.add(cipherTextArea, 1, 1);
+        textPane.add(plainFreqButton, 0, 2);
+        textPane.add(cipherFreqButton, 1, 2);
+        textPane.add(plainFreqResult, 0, 3);
+        textPane.add(cipherFreqResult, 1, 3);
     }
 
     /**
-     * 设置加解密按钮布局
+     * 设置底部按钮布局
      */
     private void initDecodeButtonPane() {
-        //加密解密的按钮
-        encryptButton = new Button();
-        decryptButton = new Button();
-        encryptButton.setText("→→\t加密\t→→");
-        decryptButton.setText("←←\t解密\t←←");
+        //加密解密按钮
+        Button encryptButton = new Button("→ 加密 →");
+        Button decryptButton = new Button("← 解密 ←");
         encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
         decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
+        //代换表按钮
+        Button keyInputButton = new Button("导入代换表");
+        Button keyOutputButton = new Button("导出代换表");
+        String pathStr = "res/key.txt";//代换表文件路径
+        keyInputButton.setOnAction(event -> inputKeyTable(pathStr));
+        keyOutputButton.setOnAction(event -> outputKeyTable(pathStr));
+        //导入明文密文按钮
+        Button plainTextInputButton = new Button("导入明文");
+        Button plainTextOutputButton = new Button("导出明文");
+        Button cipherTextInputButton = new Button("导入密文");
+        Button cipherTextOutputButton = new Button("导出密文");
+        String plainPathStr = "res/plain.txt";//明文文件路径
+        String cipherPathStr = "res/cipher.txt";//密文文件路径
+        plainTextInputButton.setOnAction(event -> {
+            String s = FileReadWrite.readTxt(plainPathStr);
+            plainTextArea.setText(s);
+        });
+        plainTextOutputButton.setOnAction(event -> {
+            String s = plainTextArea.getText();
+            FileReadWrite.writeTxt(plainPathStr, s);
+        });
+        cipherTextInputButton.setOnAction(event -> {
+            String s = FileReadWrite.readTxt(cipherPathStr);
+            cipherTextArea.setText(s);
+        });
+        cipherTextOutputButton.setOnAction(event -> {
+            String s = cipherTextArea.getText();
+            FileReadWrite.writeTxt(cipherPathStr, s);
+        });
+
         //布局
-        encDecButtonPane.getChildren().add(encryptButton);
-        encDecButtonPane.getChildren().add(decryptButton);
+        encDecButtonPane.getChildren().addAll(plainTextInputButton, plainTextOutputButton,
+                cipherTextInputButton, cipherTextOutputButton,
+                encryptButton, decryptButton, keyInputButton, keyOutputButton);
+        encDecButtonPane.setSpacing(20);//设置按钮间距
+    }
+
+    /**
+     * 导入代换表
+     *
+     * @param pathStr 文件路径，如果不存在会报错
+     */
+    private void inputKeyTable(String pathStr) {
+        //txt->string
+        String s = FileReadWrite.readTxt(pathStr);
+        //string->table
+        if (s != null) {
+            for (int i = 0; i < s.length(); i++) {
+                String ch = String.valueOf(s.charAt(i));
+                if (i < 26 + 26 + 10) {
+                    subTableKeyTextField.get(i).setText(ch);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * 导出代换表
+     *
+     * @param pathStr 文件路径，如果不存在会创建
+     */
+    private void outputKeyTable(String pathStr) {
+        //代换表->string
+        StringBuilder keyStr = new StringBuilder();
+        for (TextField textField : subTableKeyTextField) {
+            keyStr.append(textField.getText());
+        }
+        //string->txt
+        FileReadWrite.writeTxt(pathStr, keyStr.toString());
     }
 
     /**
