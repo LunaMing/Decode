@@ -143,14 +143,34 @@ public class Main extends Application {
         //代换表相关按钮
         keyInputButton = new Button("导入代换表");
         keyOutputButton = new Button("导出代换表");
+        String pathStr = "res/key.txt";//代换表文件路径
         keyInputButton.setOnAction(event -> {
-            System.out.println("input");
+            inputKeyTable(pathStr);
         });
         keyOutputButton.setOnAction(event -> {
-            outputKeyTable("res/key.txt");
+            outputKeyTable(pathStr);
         });
         //布局
         encDecButtonPane.getChildren().addAll(encryptButton, decryptButton, keyInputButton, keyOutputButton);
+    }
+
+    /**
+     * 导入代换表
+     *
+     * @param pathStr 文件路径，如果不存在会报错
+     */
+    private void inputKeyTable(String pathStr) {
+        //txt->string
+        String s = FileReadWrite.readTxt(pathStr);
+        //string->table
+        for (int i = 0; i < s.length(); i++) {
+            String ch = String.valueOf(s.charAt(i));
+            if (i < 26 + 26 + 10) {
+                subTableKeyTextField.get(i).setText(ch);
+            } else {
+                break;
+            }
+        }
     }
 
     /**
