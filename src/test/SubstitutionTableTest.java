@@ -1,9 +1,10 @@
-package solution;
+package test;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import solution.SubstitutionTable;
 
 import java.util.HashMap;
 
