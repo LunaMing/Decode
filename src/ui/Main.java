@@ -19,7 +19,7 @@ import java.util.*;
 public class Main extends Application {
     //主场景
     BorderPane mainPane = new BorderPane();
-    Scene scene = new Scene(mainPane, 700, 300);
+    Scene scene = new Scene(mainPane, 700, 700);
     //凯撒密钥
     TextField caesarKeyTextField;
     //代换表密钥
