@@ -142,8 +142,33 @@ public class Main extends Application {
         String pathStr = "res/key.txt";//代换表文件路径
         keyInputButton.setOnAction(event -> inputKeyTable(pathStr));
         keyOutputButton.setOnAction(event -> outputKeyTable(pathStr));
+        //导入明文密文按钮
+        Button plainTextInputButton = new Button("导入明文");
+        Button plainTextOutputButton = new Button("导出明文");
+        Button cipherTextInputButton = new Button("导入密文");
+        Button cipherTextOutputButton = new Button("导出密文");
+        String plainPathStr = "res/plain.txt";//明文文件路径
+        String cipherPathStr = "res/cipher.txt";//密文文件路径
+        plainTextInputButton.setOnAction(event -> {
+            String s = FileReadWrite.readTxt(plainPathStr);
+            plainTextArea.setText(s);
+        });
+        plainTextOutputButton.setOnAction(event -> {
+            String s = plainTextArea.getText();
+            FileReadWrite.writeTxt(plainPathStr, s);
+        });
+        cipherTextInputButton.setOnAction(event -> {
+            String s = FileReadWrite.readTxt(cipherPathStr);
+            cipherTextArea.setText(s);
+        });
+        cipherTextOutputButton.setOnAction(event -> {
+            String s = cipherTextArea.getText();
+            FileReadWrite.writeTxt(cipherPathStr, s);
+        });
+
         //布局
-        encDecButtonPane.getChildren().addAll(encryptButton, decryptButton, keyInputButton, keyOutputButton);
+        encDecButtonPane.getChildren().addAll(plainTextInputButton, plainTextOutputButton, cipherTextInputButton, cipherTextOutputButton,
+                encryptButton, decryptButton, keyInputButton, keyOutputButton);
     }
 
     /**
