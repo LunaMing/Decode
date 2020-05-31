@@ -9,7 +9,7 @@ public class Frequency {
      * @param inputStr 输入的字符串
      * @return 每个字母的出现次数，是一个Character和Integer的映射表
      */
-    private HashMap<Character, Integer> countNum(String inputStr) {
+    public HashMap<Character, Integer> countNum(String inputStr) {
         HashMap<Character, Integer> letterNum = new HashMap<>();
 
         //遍历字符串，统计字符出现的次数

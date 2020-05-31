@@ -19,6 +19,7 @@ public class FrequencyTest {
     public void tearDown() {
     }
 
+    //功能测：直接测试频率
     @Test
     public void funcTest() {
         String s = "aabc";
@@ -26,5 +27,15 @@ public class FrequencyTest {
         Character key = 'a';
         Double frequnce = 0.5;
         Assert.assertEquals(frequnce, hashMap.get(key));
+    }
+
+    //单元测：测试统计字母个数
+    @Test
+    public void unitTest() {
+        String s = "aabc";
+        HashMap<Character, Integer> hashMap = frequency.countNum(s);
+        Character key = 'a';
+        Integer num = 2;
+        Assert.assertEquals(num, hashMap.get(key));
     }
 }
