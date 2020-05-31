@@ -135,8 +135,9 @@ public class Main extends Application {
                 //将分析结果做成string
                 StringBuilder result = new StringBuilder();
                 for (Character key : list) {
+                    result.append("【");
                     result.append(key);
-                    result.append("：");
+                    result.append("】：");
                     result.append(map.get(key));
                     result.append("\n");
                 }
@@ -150,13 +151,15 @@ public class Main extends Application {
                 cipherFreqResult.setText("（请输入密文内容）");
             } else {
                 //分析
-                TreeMap<Character, Double> map = Frequency.countFrequency(cipherText);
+                TreeMap<Character, Double> map;
+                map = Frequency.countFrequency(cipherText);
                 List<Character> list = Frequency.sort(cipherText);
-                //将分析结果做成string
+                //list->string
                 StringBuilder result = new StringBuilder();
                 for (Character key : list) {
+                    result.append("【");
                     result.append(key);
-                    result.append("：");
+                    result.append("】：");
                     result.append(map.get(key));
                     result.append("\n");
                 }
