@@ -1,6 +1,8 @@
 package solution;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Frequency {
     /**
@@ -50,4 +52,14 @@ public class Frequency {
         return doubleHashMap;
     }
 
+    /**
+     * 按照频率排序
+     *
+     * @param inputStr 输入的字符串
+     * @return 已经排好序的一个字母列表
+     */
+    public List<Character> sort(String inputStr) {
+        List<Character> characterList = new ArrayList<>();
+        return characterList;
+    }
 }

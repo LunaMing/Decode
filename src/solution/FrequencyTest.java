@@ -19,9 +19,9 @@ public class FrequencyTest {
     public void tearDown() {
     }
 
-    //功能测：直接测试频率
+    //测试统计频率
     @Test
-    public void funcTest() {
+    public void frequencyTest() {
         String s = "aabc";
         HashMap<Character, Double> hashMap = frequency.countFrequency(s);
         Character key = 'a';
@@ -29,13 +29,22 @@ public class FrequencyTest {
         Assert.assertEquals(frequnce, hashMap.get(key));
     }
 
-    //单元测：测试统计字母个数
+    //测试统计字母个数
     @Test
-    public void unitTest() {
+    public void countLetterTest() {
         String s = "aabc";
         HashMap<Character, Integer> hashMap = frequency.countNum(s);
         Character key = 'a';
         Integer num = 2;
         Assert.assertEquals(num, hashMap.get(key));
+    }
+
+    //测试频率从大到小排序
+    @Test
+    public void downSequenceTest() {
+        String s = "aabc";
+        Character mostNumLetter = frequency.sort(s).get(0);
+        Character mostCh = 'a';
+        Assert.assertEquals(mostCh, mostNumLetter);
     }
 }
