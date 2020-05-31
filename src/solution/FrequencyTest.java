@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class FrequencyTest {
     Frequency frequency;
@@ -23,7 +24,7 @@ public class FrequencyTest {
     @Test
     public void frequencyTest() {
         String s = "aabc";
-        HashMap<Character, Double> hashMap = frequency.countFrequency(s);
+        TreeMap<Character, Double> hashMap = frequency.countFrequency(s);
         Character key = 'a';
         Double frequnce = 0.5;
         Assert.assertEquals(frequnce, hashMap.get(key));
@@ -33,7 +34,7 @@ public class FrequencyTest {
     @Test
     public void countLetterTest() {
         String s = "aabc";
-        HashMap<Character, Integer> hashMap = frequency.countNum(s);
+        TreeMap<Character, Integer> hashMap = frequency.countNum(s);
         Character key = 'a';
         Integer num = 2;
         Assert.assertEquals(num, hashMap.get(key));
@@ -41,7 +42,7 @@ public class FrequencyTest {
 
     //测试频率从大到小排序
     @Test
-    public void downSequenceTest() {
+    public void downSortTest() {
         String s = "aabc";
         Character mostNumLetter = frequency.sort(s).get(0);
         Character mostCh = 'a';
