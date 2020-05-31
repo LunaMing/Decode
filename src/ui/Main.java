@@ -167,7 +167,8 @@ public class Main extends Application {
         });
 
         //布局
-        encDecButtonPane.getChildren().addAll(plainTextInputButton, plainTextOutputButton, cipherTextInputButton, cipherTextOutputButton,
+        encDecButtonPane.getChildren().addAll(plainTextInputButton, plainTextOutputButton,
+                cipherTextInputButton, cipherTextOutputButton,
                 encryptButton, decryptButton, keyInputButton, keyOutputButton);
     }
 
