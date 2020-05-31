@@ -36,13 +36,18 @@ public class Frequency {
      * @return 每个字母的出现频率，是一个Character和Double的映射表
      */
     public HashMap<Character, Double> countFrequency(String inputStr) {
-        HashMap<Character, Double> characterHashMap = new HashMap<Character, Double>();
+        HashMap<Character, Double> doubleHashMap = new HashMap<>();
         //统计次数
-        HashMap<Character, Integer> letterNum = new HashMap<>();
-        letterNum = countNum(inputStr);
+        HashMap<Character, Integer> letterNum = countNum(inputStr);
         //用次数来计算频率
-
-        return characterHashMap;
+        int len = inputStr.length();
+        for (Character key : letterNum.keySet()) {
+            int num_key = letterNum.get(key);
+            double d = (double) num_key / (double) len;
+            Double fre_key = d;
+            doubleHashMap.put(key, fre_key);
+        }
+        return doubleHashMap;
     }
 
 }
