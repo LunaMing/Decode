@@ -1,38 +1,42 @@
 package ui;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import solution.Caesar;
+import solution.SubstitutionTable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class Main extends Application {
     //主场景
-    GridPane mainPane = new GridPane();
-    Scene scene = new Scene(mainPane, 600, 250);
-
-    //中间加密解密按钮
-    Button encBtn, decBtn;
-    GridPane centerPane;
-
-    //随机密钥
-    Label keyHintLabel;
-    TextField keyTextField;
-    Button randomKeyButton;
-
+    BorderPane mainPane = new BorderPane();
+    Scene scene = new Scene(mainPane, 700, 300);
+    //凯撒密钥
+    TextField caesarKeyTextField;
+    //代换表密钥
+    List<Label> subTableKeyLabel = new ArrayList<>();
+    List<TextField> subTableKeyTextField = new ArrayList<>();
+    //代换表
+    SubstitutionTable subTable;
     //明文密文输入
-    Label leftLabel, rightLabel;
-    GridPane leftPane, rightPane;
-    Button leftPaste, leftCopy, rightPaste, rightCopy;
-    TextArea leftText, rightText;
+    TextArea plainTextArea, cipherTextArea;
+    //加密解密按钮
+    Button encryptButton, decryptButton;
+    //布局
+    VBox keyPane = new VBox();//密钥全布局
+    GridPane textPane = new GridPane();//明文密文
+    HBox encDecButtonPane = new HBox();//加解密按钮
 
     @Override
     public void start(Stage primaryStage) {
@@ -40,108 +44,132 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setTitle("加密/解密工具");
 
-        //设置输入密钥提示标签，右对齐
-        keyHintLabel = new Label();
-        keyHintLabel.setMaxWidth(Double.MAX_VALUE);
-        keyHintLabel.setAlignment(Pos.CENTER_RIGHT);
-        keyHintLabel.setText("凯撒密码的密钥（0，1，2 ... 25）：");
-
-        //密钥输入框
-        keyTextField = new TextField("1");
-
-        //随机生成密钥的按钮
-        randomKeyButton = new Button("随机生成");
-        randomKeyButton.setOnAction(event -> getRandomOffset(keyTextField));
-
-        //密钥系列加入到主布局
-        mainPane.add(keyHintLabel, 0, 0);
-        mainPane.add(keyTextField, 1, 0);
-        mainPane.add(randomKeyButton, 2, 0);
-
-        //明文密文输入提示
-        String plainTextHint = "明文";
-        String cipherTextHint = "密文";
-        String inputHintLabel_back = "（仅限英文字母）：";
-        leftLabel = new Label(plainTextHint + inputHintLabel_back);
-        rightLabel = new Label(cipherTextHint + inputHintLabel_back);
-
-        //左文本框和复制粘贴按钮
-        leftText = new TextArea("a");
-        leftCopy = new Button();
-        setCopyButton(leftCopy, leftText);
-        leftPaste = new Button();
-        setPasteButton(leftPaste, leftText);
-        //右文本框和复制粘贴按钮
-        rightText = new TextArea();
-        rightCopy = new Button();
-        setCopyButton(rightCopy, rightText);
-        rightPaste = new Button();
-        setPasteButton(rightPaste, rightText);
-
-        //左边布局
-        leftPane = new GridPane();
-        leftPane.setPadding(new Insets(20, 10, 20, 5));
-        setAsidePane(leftPane, leftPaste, leftCopy, leftLabel, leftText);
-        //右边布局
-        rightPane = new GridPane();
-        rightPane.setPadding(new Insets(20, 5, 20, 10));
-        setAsidePane(rightPane, rightPaste, rightCopy, rightLabel, rightText);
-
-        //中间加密解密的按钮
-        encBtn = new Button();
-        decBtn = new Button();
-        setEncBtn(encBtn, keyTextField, rightText, leftText);
-        setDecBtn(decBtn, keyTextField, rightText, leftText);
-
-        //中间布局
-        centerPane = new GridPane();
-        centerPane.setPadding(new Insets(30, 5, 30, 5));
-        centerPane.setVgap(20);
-        centerPane.add(encBtn, 0, 0);
-        centerPane.add(decBtn, 0, 1);
+        initKeyPane();
+        initTextFieldPane();
+        initDecodeButtonPane();
 
         //将左中右布局加入到主布局中
-        mainPane.add(leftPane, 0, 1);
-        mainPane.add(centerPane, 1, 1);
-        mainPane.add(rightPane, 2, 1);
+        mainPane.setTop(keyPane);
+        mainPane.setCenter(textPane);
+        mainPane.setBottom(encDecButtonPane);
     }
 
     /**
-     * 设置输入明文密文的布局
-     *
-     * @param pane        设置的布局
-     * @param pasteButton 粘贴按钮
-     * @param copyButton  复制按钮
-     * @param label       文本标签，指示文本框应该填写的内容
-     * @param textArea    文本框
+     * 设置输入密钥系列布局
      */
-    private void setAsidePane(GridPane pane, Button pasteButton, Button copyButton, Label label, TextArea textArea) {
+    private void initKeyPane() {
+        //凯撒
+        //设置输入密钥提示标签
+        Label caesarKeyHintLabel = new Label("凯撒密码的密钥（0，1，2 ... 25）");
+        //密钥输入框
+        caesarKeyTextField = new TextField("0");
+        //随机生成密钥的按钮
+        Button caesarRandomKeyButton = new Button("随机生成");
+        caesarRandomKeyButton.setOnAction(event -> nextRandomKey());
+        //布局
+        HBox caesarPane = new HBox();
+        caesarPane.getChildren().add(caesarKeyHintLabel);
+        caesarPane.getChildren().add(caesarKeyTextField);
+        caesarPane.getChildren().add(caesarRandomKeyButton);
 
-        GridPane bottomPane = new GridPane();
-        bottomPane.setHgap(20);
-        bottomPane.add(pasteButton, 0, 0);
-        bottomPane.add(copyButton, 1, 0);
-        bottomPane.setAlignment(Pos.CENTER);
+        //代换表
+        Label tableHintLabel;
+        tableHintLabel = new Label();
+        tableHintLabel.setText("代换表");
+        GridPane subTablePane = new GridPane();//代换表布局
+        //初始化表内容
+        Label label;
+        TextField textField;
+        char ch;
+        //小写
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            int index;
+            if (i < 26) {
+                ch = 'a';
+                index = i;
+            } else if (i < 26 + 26) {
+                ch = 'A';
+                index = i - 26;
+            } else {
+                ch = '0';
+                index = i - 26 - 26;
+            }
+            ch = (char) (ch + index);
+            String str = String.valueOf(ch);
+            label = new Label(str);
+            textField = new TextField(str);
+            subTableKeyLabel.add(label);
+            subTableKeyTextField.add(textField);
+            int n = i / 26 * 2;
+            int m = i % 26;
+            subTablePane.add(subTableKeyLabel.get(i), m, n);
+            subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
+        }
 
-        pane.setHgap(20);
-        pane.add(label, 0, 0);
-        pane.add(textArea, 0, 1);
-        pane.add(bottomPane, 0, 2);
+        //布局
+        keyPane.getChildren().add(caesarPane);
+        keyPane.getChildren().add(tableHintLabel);
+        keyPane.getChildren().add(subTablePane);
     }
 
     /**
-     * 设置加密按钮
+     * 设置输入明文密文系列布局
+     */
+    private void initTextFieldPane() {
+        //明文密文输入提示
+        Label leftLabel = new Label("明文");
+        Label rightLabel = new Label("密文");
+        //文本框
+        plainTextArea = new TextArea("abcDEF");
+        cipherTextArea = new TextArea();
+        //布局
+        textPane.add(leftLabel, 0, 0);
+        textPane.add(rightLabel, 1, 0);
+        textPane.add(plainTextArea, 0, 1);
+        textPane.add(cipherTextArea, 1, 1);
+    }
+
+    /**
+     * 设置加解密按钮布局
+     */
+    private void initDecodeButtonPane() {
+        //加密解密的按钮
+        encryptButton = new Button();
+        decryptButton = new Button();
+        encryptButton.setText("→→\t加密\t→→");
+        decryptButton.setText("←←\t解密\t←←");
+        encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
+        decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
+        //布局
+        encDecButtonPane.getChildren().add(encryptButton);
+        encDecButtonPane.getChildren().add(decryptButton);
+    }
+
+    /**
+     * 初始化代换表
+     */
+    private void initSubTable() {
+        HashMap hashMap = new HashMap();
+        String s;
+        char k, v;
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            s = subTableKeyLabel.get(i).getText();
+            k = s.charAt(0);
+            s = subTableKeyTextField.get(i).getText();
+            v = s.charAt(0);
+            hashMap.put(k, v);
+        }
+        subTable = new SubstitutionTable(hashMap);
+    }
+
+    /**
+     * 设置加密动作
      *
-     * @param encButton      要设置为“加密”的按钮
-     * @param keyTextArea    密钥的文本框
      * @param cipherTextArea 密文的文本框
      * @param plainTextArea  明文的文本框
      */
-    private void setEncBtn(Button encButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        encButton.setText("→→\n加密\n→→");
-        encButton.setMinSize(50, 80);
-
-        encButton.setOnAction(event -> {
+    private void encryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
+        /*encButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
             int key = Math.abs(tempInt) % 26;
             String keyStr = String.valueOf(key);
@@ -149,22 +177,25 @@ public class Main extends Application {
             String plainText = plainTextArea.getText();
             String cipherText = new Caesar(key).encrypt(plainText);//凯撒密码
             cipherTextArea.setText(cipherText);
-        });
+            caesarSetTable(key);
+        });*/
+        //获取明文
+        String plainText = plainTextArea.getText();
+        //初始化代换表
+        initSubTable();
+        //加密
+        String cipherText = subTable.encrypt(plainText);
+        cipherTextArea.setText(cipherText);
     }
 
     /**
-     * 设置解密按钮
+     * 设置解密动作
      *
-     * @param decButton      要设置为“解密”的按钮
-     * @param keyTextArea    密钥的文本框
      * @param cipherTextArea 密文的文本框
      * @param plainTextArea  明文的文本框
      */
-    private void setDecBtn(Button decButton, TextField keyTextArea, TextArea cipherTextArea, TextArea plainTextArea) {
-        decButton.setText("←←\n解密\n←←");
-        decButton.setMinSize(50, 80);
-
-        decButton.setOnAction(event -> {
+    private void decryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
+        /*decButton.setOnAction(event -> {
             int tempInt = Integer.parseInt(keyTextArea.getText());
             int offset = Math.abs(tempInt) % 26;
             String keyStr = String.valueOf(offset);
@@ -172,46 +203,51 @@ public class Main extends Application {
             String cipherText = cipherTextArea.getText();
             String plainText = new Caesar(offset).decrypt(cipherText);//凯撒密码
             plainTextArea.setText(plainText);
-        });
-    }
-
-    /**
-     * 设置粘贴按钮
-     *
-     * @param pasteButton 要设置为“粘贴”的按钮
-     * @param textarea    要绑定的文本框，设置后完成后，点击按钮，会将文本粘贴到这个文本框里面
-     */
-    private void setPasteButton(Button pasteButton, TextArea textarea) {
-        pasteButton.setText("粘贴到此处");
-        pasteButton.setOnAction(event -> {
-            textarea.clear();
-            textarea.paste();
-        });
-    }
-
-    /**
-     * 设置复制按钮
-     *
-     * @param copyButton 要设置为“复制”的按钮
-     * @param textarea   要绑定的文本框，设置后完成后，点击按钮，会将这个文本框里面的文字复制出来
-     */
-    private void setCopyButton(Button copyButton, TextArea textarea) {
-        copyButton.setText("从此处复制");
-        copyButton.setOnAction(event -> {
-            textarea.selectAll();
-            textarea.copy();
-        });
+            caesarSetTable(offset);
+        });*/
+        //获取密文
+        String cipherText = cipherTextArea.getText();
+        //初始化代换表
+        initSubTable();
+        //解密
+        String plainText = subTable.decrypt(cipherText);
+        plainTextArea.setText(plainText);
     }
 
     /**
      * 随机生成密钥
-     *
-     * @param offsetText 密钥放置的文本框
      */
-    private void getRandomOffset(TextField offsetText) {
+    private void nextRandomKey() {
+        //生成随机数
         Random rand = new Random();
-        int myOffsetKey = rand.nextInt(26);
-        offsetText.setText(String.valueOf(myOffsetKey));
+        int key = rand.nextInt(25);
+        //给凯撒密码的文本框赋值
+        caesarKeyTextField.setText(String.valueOf(key));
+        //给代换表赋值
+        caesarSetTable(key);
+    }
+
+    /**
+     * 用凯撒密码设置代换表
+     */
+    private void caesarSetTable(int key) {
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            char nCh;
+            int index = i;
+            if (i < 26) {
+                index = (index + key) % 26;
+                nCh = (char) ((int) 'a' + index);
+            } else if (i < 26 + 26) {
+                index = (index - 26 + key) % 26;
+                nCh = (char) ((int) 'A' + index);
+            } else {
+                index = (index - 26 - 26 + key) % 10;
+                nCh = (char) ((int) '0' + index);
+            }
+            String newText = String.valueOf(nCh);
+            subTableKeyTextField.get(i).setText(newText);
+        }
+        initSubTable();
     }
 
     public static void main(String[] args) {
