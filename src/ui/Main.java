@@ -144,12 +144,8 @@ public class Main extends Application {
         keyInputButton = new Button("导入代换表");
         keyOutputButton = new Button("导出代换表");
         String pathStr = "res/key.txt";//代换表文件路径
-        keyInputButton.setOnAction(event -> {
-            inputKeyTable(pathStr);
-        });
-        keyOutputButton.setOnAction(event -> {
-            outputKeyTable(pathStr);
-        });
+        keyInputButton.setOnAction(event -> inputKeyTable(pathStr));
+        keyOutputButton.setOnAction(event -> outputKeyTable(pathStr));
         //布局
         encDecButtonPane.getChildren().addAll(encryptButton, decryptButton, keyInputButton, keyOutputButton);
     }
@@ -163,12 +159,14 @@ public class Main extends Application {
         //txt->string
         String s = FileReadWrite.readTxt(pathStr);
         //string->table
-        for (int i = 0; i < s.length(); i++) {
-            String ch = String.valueOf(s.charAt(i));
-            if (i < 26 + 26 + 10) {
-                subTableKeyTextField.get(i).setText(ch);
-            } else {
-                break;
+        if (s != null) {
+            for (int i = 0; i < s.length(); i++) {
+                String ch = String.valueOf(s.charAt(i));
+                if (i < 26 + 26 + 10) {
+                    subTableKeyTextField.get(i).setText(ch);
+                } else {
+                    break;
+                }
             }
         }
     }
@@ -180,13 +178,12 @@ public class Main extends Application {
      */
     private void outputKeyTable(String pathStr) {
         //代换表->string
-        String keyStr = "";
+        StringBuilder keyStr = new StringBuilder();
         for (TextField textField : subTableKeyTextField) {
-            keyStr += textField.getText();
+            keyStr.append(textField.getText());
         }
         //string->txt
-        FileReadWrite fileReadWrite = new FileReadWrite();
-        fileReadWrite.writeTxt(pathStr, keyStr);
+        FileReadWrite.writeTxt(pathStr, keyStr.toString());
     }
 
     /**
