@@ -11,7 +11,7 @@ public class FileReadWrite {
     /**
      * 传入txt路径读取txt文件
      *
-     * @param txtPath
+     * @param txtPath 文件路径
      * @return 返回读取到的内容
      */
     public static String readTxt(String txtPath) {
@@ -22,8 +22,8 @@ public class FileReadWrite {
                 InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-                StringBuffer sb = new StringBuffer();
-                String text = null;
+                StringBuilder sb = new StringBuilder();
+                String text;
                 while ((text = bufferedReader.readLine()) != null) {
                     sb.append(text);
                 }
@@ -43,12 +43,13 @@ public class FileReadWrite {
      * @param content 需要写入的文本
      */
     public static void writeTxt(String txtPath, String content) {
-        FileOutputStream fileOutputStream = null;
+        FileOutputStream fileOutputStream;
         File file = new File(txtPath);
         try {
-            if (file.exists()) {
+            if (!file.exists()) {
                 //判断文件是否存在，如果不存在就新建一个txt
-                file.createNewFile();
+                boolean b = file.createNewFile();
+                if (!b) throw new Exception();
             }
             fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(content.getBytes());
