@@ -31,10 +31,6 @@ public class Main extends Application {
     SubstitutionTable subTable;
     //明文密文输入
     TextArea plainTextArea, cipherTextArea;
-    //加密解密按钮
-    Button encryptButton, decryptButton;
-    //代换表按钮
-    Button keyInputButton, keyOutputButton;
     //布局
     VBox keyPane = new VBox();//密钥全布局
     GridPane textPane = new GridPane();//明文密文
@@ -135,14 +131,14 @@ public class Main extends Application {
      * 设置底部按钮布局
      */
     private void initDecodeButtonPane() {
-        //加密解密的按钮
-        encryptButton = new Button("→ 加密 →");
-        decryptButton = new Button("← 解密 ←");
+        //加密解密按钮
+        Button encryptButton = new Button("→ 加密 →");
+        Button decryptButton = new Button("← 解密 ←");
         encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
         decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
-        //代换表相关按钮
-        keyInputButton = new Button("导入代换表");
-        keyOutputButton = new Button("导出代换表");
+        //代换表按钮
+        Button keyInputButton = new Button("导入代换表");
+        Button keyOutputButton = new Button("导出代换表");
         String pathStr = "res/key.txt";//代换表文件路径
         keyInputButton.setOnAction(event -> inputKeyTable(pathStr));
         keyOutputButton.setOnAction(event -> outputKeyTable(pathStr));
