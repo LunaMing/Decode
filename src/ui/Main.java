@@ -147,10 +147,26 @@ public class Main extends Application {
             System.out.println("input");
         });
         keyOutputButton.setOnAction(event -> {
-            System.out.println("Output");
+            outputKeyTable("res/key.txt");
         });
         //布局
         encDecButtonPane.getChildren().addAll(encryptButton, decryptButton, keyInputButton, keyOutputButton);
+    }
+
+    /**
+     * 导出代换表
+     *
+     * @param pathStr 文件路径，如果不存在会创建
+     */
+    private void outputKeyTable(String pathStr) {
+        //代换表->string
+        String keyStr = "";
+        for (TextField textField : subTableKeyTextField) {
+            keyStr += textField.getText();
+        }
+        //string->txt
+        FileReadWrite fileReadWrite = new FileReadWrite();
+        fileReadWrite.writeTxt(pathStr, keyStr);
     }
 
     /**
