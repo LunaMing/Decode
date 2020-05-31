@@ -27,6 +27,8 @@ public class Main extends Application {
     //代换表密钥
     List<Label> subTableKeyLabel = new ArrayList<>();
     List<TextField> subTableKeyTextField = new ArrayList<>();
+    //代换表
+    SubstitutionTable subTable;
     //明文密文输入
     TextArea plainTextArea, cipherTextArea;
     //加密解密按钮
@@ -144,6 +146,23 @@ public class Main extends Application {
     }
 
     /**
+     * 初始化代换表
+     */
+    private void initSubTable() {
+        HashMap hashMap = new HashMap();
+        String s;
+        char k, v;
+        for (int i = 0; i < 26 + 26 + 10; i++) {
+            s = subTableKeyLabel.get(i).getText();
+            k = s.charAt(0);
+            s = subTableKeyTextField.get(i).getText();
+            v = s.charAt(0);
+            hashMap.put(k, v);
+        }
+        subTable = new SubstitutionTable(hashMap);
+    }
+
+    /**
      * 设置加密动作
      *
      * @param cipherTextArea 密文的文本框
@@ -163,18 +182,9 @@ public class Main extends Application {
         //获取明文
         String plainText = plainTextArea.getText();
         //初始化代换表
-        HashMap hashMap = new HashMap();
-        String s;
-        char k, v;
-        for (int i = 0; i < 26 + 26 + 10; i++) {
-            s = subTableKeyLabel.get(i).getText();
-            k = s.charAt(0);
-            s = subTableKeyTextField.get(i).getText();
-            v = s.charAt(0);
-            hashMap.put(k, v);
-        }
+        initSubTable();
         //加密
-        String cipherText = new SubstitutionTable(hashMap).encrypt(plainText);
+        String cipherText = subTable.encrypt(plainText);
         cipherTextArea.setText(cipherText);
     }
 
@@ -198,18 +208,9 @@ public class Main extends Application {
         //获取密文
         String cipherText = cipherTextArea.getText();
         //初始化代换表
-        HashMap hashMap = new HashMap();
-        String s;
-        char k, v;
-        for (int i = 0; i < 26 + 26 + 10; i++) {
-            s = subTableKeyLabel.get(i).getText();
-            k = s.charAt(0);
-            s = subTableKeyTextField.get(i).getText();
-            v = s.charAt(0);
-            hashMap.put(k, v);
-        }
+        initSubTable();
         //解密
-        String plainText = new SubstitutionTable(hashMap).decrypt(cipherText);
+        String plainText = subTable.decrypt(cipherText);
         plainTextArea.setText(plainText);
     }
 
@@ -246,6 +247,7 @@ public class Main extends Application {
             String newText = String.valueOf(nCh);
             subTableKeyTextField.get(i).setText(newText);
         }
+        initSubTable();
     }
 
     public static void main(String[] args) {
