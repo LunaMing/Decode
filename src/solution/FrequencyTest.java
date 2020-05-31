@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
-
 public class FrequencyTest {
     Frequency frequency;
 
@@ -22,9 +20,9 @@ public class FrequencyTest {
     }
 
     @Test
-    public void calculate() {
+    public void funcTest() {
         String s = "aabc";
-        HashMap<Character, Double> hashMap = frequency.calculate(s);
+        HashMap<Character, Double> hashMap = frequency.countFrequency(s);
         Character key = 'a';
         Double frequnce = 0.5;
         Assert.assertEquals(frequnce, hashMap.get(key));
