@@ -1,5 +1,6 @@
 package ui;
 
+import algorithm.Frequency;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -120,11 +121,37 @@ public class Main extends Application {
         //文本框
         plainTextArea = new TextArea("abcDEF");
         cipherTextArea = new TextArea();
+        //频率分析
+        Label plainFreqResult = new Label("（请点击按钮开始分析）");
+        Label cipherFreqResult = new Label("（请点击按钮开始分析）");
+        Button plainFreqButton = new Button("明文频率分析");
+        Button cipherFreqButton = new Button("密文频率分析");
+        plainFreqButton.setOnAction(event -> {
+            String plainText = plainTextArea.getText();
+            if (plainText.isEmpty()) {
+                //如果明文是空的就不用分析了
+                plainFreqResult.setText("（请输入明文内容）");
+            } else {
+                //todo
+            }
+        });
+        cipherFreqButton.setOnAction(event -> {
+            String cipherText = cipherTextArea.getText();
+            if (cipherText.isEmpty()) {
+                cipherFreqResult.setText("（请输入密文内容）");
+            } else {
+                //todo
+            }
+        });
         //布局
         textPane.add(leftLabel, 0, 0);
         textPane.add(rightLabel, 1, 0);
         textPane.add(plainTextArea, 0, 1);
         textPane.add(cipherTextArea, 1, 1);
+        textPane.add(plainFreqButton, 0, 2);
+        textPane.add(cipherFreqButton, 1, 2);
+        textPane.add(plainFreqResult, 0, 3);
+        textPane.add(cipherFreqResult, 1, 3);
     }
 
     /**
