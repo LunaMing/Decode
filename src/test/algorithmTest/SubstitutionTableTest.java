@@ -1,10 +1,10 @@
-package test;
+package algorithmTest;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import solution.SubstitutionTable;
+import algorithm.SubstitutionTable;
 
 import java.util.HashMap;
 

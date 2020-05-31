@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import solution.SubstitutionTable;
+import algorithm.SubstitutionTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

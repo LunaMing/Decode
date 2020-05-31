@@ -1,4 +1,4 @@
-package solution;
+package algorithm;
 
 public class Caesar {
     public int offset;

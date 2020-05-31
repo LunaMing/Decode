@@ -1,12 +1,11 @@
-package test;
+package algorithmTest;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import solution.Frequency;
+import algorithm.Frequency;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 public class FrequencyTest {
