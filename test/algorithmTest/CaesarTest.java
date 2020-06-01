@@ -12,8 +12,8 @@ public class CaesarTest {
 
     @Before
     public void setUp() throws Exception {
-        int offset = 1;//a->b
-        caesar = new Caesar(offset);
+        int key = 1;//a->b
+        caesar = new Caesar(key);
     }
 
     @After
@@ -23,16 +23,16 @@ public class CaesarTest {
     @Test
     public void encrypt() {
         //明文
-        String plainStr = "a";
-        //密文
-        String cipherStr = "b";
-        //加密
-        cipherStr = caesar.encrypt(plainStr);
+        String plainStr = "abc";
         //验证加密成果
-        Assert.assertEquals(cipherStr, "b");
+        Assert.assertEquals("bcd", caesar.encrypt(plainStr));
     }
 
     @Test
     public void decrypt() {
+        //密文
+        String cipherStr = "bcd";
+        //验证解密成果
+        Assert.assertEquals("abc", caesar.decrypt(cipherStr));
     }
 }
