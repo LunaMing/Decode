@@ -6,7 +6,6 @@ public class RC4 {
 
     public RC4(String key) {
         this.key = key;
-        initSBox();
     }
 
     /**
@@ -50,8 +49,28 @@ public class RC4 {
      * @return 密文
      */
     public String encrypt(String plainText) {
-        String cipherText = "";
-        return cipherText;
+        //按照密钥初始化S盒
+        initSBox();
+        //开始加密
+        StringBuilder cipherText = new StringBuilder();
+        int i = 0, j = 0, t = 0;
+        for (char in : plainText.toCharArray()) {
+            //先找到j
+            j += S[i];
+            j %= 256;//防止数组越界
+            t = S[i] + S[j];
+            t %= 256;//防止数组越界
+            char out = (char) (in ^ S[t]);
+            cipherText.append(out);
+            //swap S[i] S[j]
+            char temp = S[i];
+            S[i] = S[j];
+            S[j] = temp;
+            //下一个i
+            i++;
+            i %= 256;//防止数组越界
+        }
+        return cipherText.toString();
     }
 
     /**
