@@ -25,7 +25,7 @@ public class RC4Test {
         String plainS = expectedStr;
         String cipherS;
         cipherS = rc4.encrypt(plainS);
-        System.out.println("密文：【" + cipherS + "】。\n");
+        System.out.println("密文：【" + cipherS + "】。");
         plainS = rc4.decrypt(cipherS);
         Assert.assertEquals(expectedStr, plainS);
     }
