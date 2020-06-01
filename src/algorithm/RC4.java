@@ -60,6 +60,7 @@ public class RC4 {
             j %= 256;//防止数组越界
             t = S[i] + S[j];
             t %= 256;//防止数组越界
+            //对字符真正的加密
             char out = (char) (in ^ S[t]);
             cipherText.append(out);
             //swap S[i] S[j]
