@@ -269,6 +269,7 @@ public class Main extends Application {
 
     /**
      * 初始化代换表
+     * 就是把UI上面的密钥传给代换表的算法类。
      */
     private void initSubTable() {
         HashMap<Character, Character> hashMap = new HashMap<>();
