@@ -73,9 +73,7 @@ public class Main extends Application {
         caesarPane.setSpacing(5);
 
         //代换表
-        Label tableHintLabel;
-        tableHintLabel = new Label();
-        tableHintLabel.setText("*** 代换表 ***");
+        Label tableHintLabel = new Label("*** 代换表 ***");
         GridPane subTablePane = new GridPane();//代换表布局
         //初始化表内容
         Label label;
@@ -113,16 +111,20 @@ public class Main extends Application {
         encryptTableButton.setOnAction(event -> encryptTable(cipherTextArea, plainTextArea));
         decryptTableButton.setOnAction(event -> decryptTable(cipherTextArea, plainTextArea));
         //RC4
+        Label RC4HintLabel = new Label("*** RC4 ***");
         Button encryptFlowButton = new Button(" 流加密 →→→ ");
         Button decryptFlowButton = new Button(" ←←← 流解密 ");
         encryptFlowButton.setOnAction(event -> encryptFlow(cipherTextArea, plainTextArea));
         decryptFlowButton.setOnAction(event -> decryptFlow(cipherTextArea, plainTextArea));
         //布局
         HBox buttonPane = new HBox();
-        buttonPane.getChildren().addAll(encryptTableButton, decryptTableButton, encryptFlowButton, decryptFlowButton);
-
+        buttonPane.getChildren().addAll(encryptTableButton, decryptTableButton);
+        HBox RC4Pane = new HBox();
+        RC4Pane.getChildren().addAll(RC4HintLabel, encryptFlowButton, decryptFlowButton);
         //布局
-        keyPane.getChildren().addAll(caesarHintLabel, caesarPane, tableHintLabel, subTablePane, buttonPane);
+        keyPane.getChildren().addAll(caesarHintLabel, caesarPane,
+                tableHintLabel, subTablePane, buttonPane,
+                RC4HintLabel, RC4Pane);
         keyPane.setSpacing(10);
     }
 
