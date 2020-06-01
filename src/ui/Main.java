@@ -141,20 +141,7 @@ public class Main extends Application {
                 //如果明文是空的就不用分析了
                 plainFreqResult.setText("（请输入明文内容）");
             } else {
-                //分析
-                TreeMap<Character, Double> map = Frequency.countFrequency(plainText);
-                List<Character> list = Frequency.sort(plainText);
-                //将分析结果做成string
-                StringBuilder result = new StringBuilder();
-                for (Character key : list) {
-                    result.append("【");
-                    result.append(key);
-                    result.append("】：");
-                    result.append(map.get(key));
-                    result.append("\n");
-                }
-                //放到label输出
-                plainFreqResult.setText(String.valueOf(result));
+                plainFreqResult.setText(String.valueOf(analyseFreq(plainText)));
             }
         });
         cipherFreqButton.setOnAction(event -> {
@@ -162,21 +149,7 @@ public class Main extends Application {
             if (cipherText.isEmpty()) {
                 cipherFreqResult.setText("（请输入密文内容）");
             } else {
-                //分析
-                TreeMap<Character, Double> map;
-                map = Frequency.countFrequency(cipherText);
-                List<Character> list = Frequency.sort(cipherText);
-                //list->string
-                StringBuilder result = new StringBuilder();
-                for (Character key : list) {
-                    result.append("【");
-                    result.append(key);
-                    result.append("】：");
-                    result.append(map.get(key));
-                    result.append("\n");
-                }
-                //放到label输出
-                cipherFreqResult.setText(String.valueOf(result));
+                cipherFreqResult.setText(String.valueOf(analyseFreq(cipherText)));
             }
         });
         //布局
@@ -188,6 +161,29 @@ public class Main extends Application {
         textPane.add(cipherFreqButton, 1, 2);
         textPane.add(plainFreqResult, 0, 3);
         textPane.add(cipherFreqResult, 1, 3);
+    }
+
+    /**
+     * 频率分析
+     *
+     * @param analyseStr 要分析的字符串
+     * @return 格式化输出的分析结果
+     */
+    private String analyseFreq(String analyseStr) {
+        //分析
+        TreeMap<Character, Double> map = Frequency.countFrequency(analyseStr);
+        List<Character> list = Frequency.sort(analyseStr);
+        //将分析结果做成string
+        StringBuilder result = new StringBuilder();
+        for (Character key : list) {
+            result.append("【");
+            result.append(key);
+            result.append("】：");
+            //用百分比输出
+            result.append(map.get(key) * 100);
+            result.append("%\n");
+        }
+        return String.valueOf(result);
     }
 
     /**
