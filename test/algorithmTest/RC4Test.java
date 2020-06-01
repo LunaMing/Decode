@@ -21,12 +21,13 @@ public class RC4Test {
 
     @Test
     public void encryptAndDecrypt() {
-        String plainS = "aabc";
+        String expectedStr = "ab";
+        String plainS = expectedStr;
         String cipherS;
         cipherS = rc4.encrypt(plainS);
         System.out.println("密文：【" + cipherS + "】。\n");
         plainS = rc4.decrypt(cipherS);
-        Assert.assertEquals("aabc", plainS);
+        Assert.assertEquals(expectedStr, plainS);
     }
 
 }

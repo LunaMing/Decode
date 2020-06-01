@@ -1,6 +1,7 @@
 package ui;
 
 import algorithm.Frequency;
+import algorithm.RC4;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,6 +28,8 @@ public class Main extends Application {
     List<TextField> subTableKeyTextField = new ArrayList<>();
     //代换表
     SubstitutionTable subTable;
+    //RC4
+    RC4 rc4 = new RC4("123456");//todo 密钥会影响加密效果，有一些key值显示不出来，会导致解密失败
     //明文密文输入
     TextArea plainTextArea, cipherTextArea;
     //布局
@@ -103,21 +106,84 @@ public class Main extends Application {
             subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
         }
 
-        //代换表加密解密按钮
+        //加密解密按钮
+        //代换表
         Button encryptTableButton = new Button(" 块加密 →→→ ");
         Button decryptTableButton = new Button(" ←←← 块解密 ");
         encryptTableButton.setOnAction(event -> encryptTable(cipherTextArea, plainTextArea));
         decryptTableButton.setOnAction(event -> decryptTable(cipherTextArea, plainTextArea));
-        //流加密解密按钮
-        Button encButton = new Button(" 流加密 →→→ ");
-        Button decButton = new Button(" ←←← 流解密 ");
+        //RC4
+        Button encryptFlowButton = new Button(" 流加密 →→→ ");
+        Button decryptFlowButton = new Button(" ←←← 流解密 ");
+        encryptFlowButton.setOnAction(event -> encryptFlow(cipherTextArea, plainTextArea));
+        decryptFlowButton.setOnAction(event -> decryptFlow(cipherTextArea, plainTextArea));
         //布局
         HBox buttonPane = new HBox();
-        buttonPane.getChildren().addAll(encryptTableButton, decryptTableButton, encButton, decButton);
+        buttonPane.getChildren().addAll(encryptTableButton, decryptTableButton, encryptFlowButton, decryptFlowButton);
 
         //布局
         keyPane.getChildren().addAll(caesarHintLabel, caesarPane, tableHintLabel, subTablePane, buttonPane);
         keyPane.setSpacing(10);
+    }
+
+    /**
+     * 设置流加密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void encryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取明文
+        String plainText = plainTextArea.getText();
+        //加密
+        String cipherText = rc4.encrypt(plainText);
+        cipherTextArea.setText(cipherText);
+    }
+
+    /**
+     * 设置流解密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void decryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取密文
+        String cipherText = cipherTextArea.getText();
+        //解密
+        String plainText = rc4.decrypt(cipherText);
+        plainTextArea.setText(plainText);
+    }
+
+    /**
+     * 设置代换表加密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void encryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取明文
+        String plainText = plainTextArea.getText();
+        //初始化代换表
+        initSubTable();
+        //加密
+        String cipherText = subTable.encrypt(plainText);
+        cipherTextArea.setText(cipherText);
+    }
+
+    /**
+     * 设置代换表解密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void decryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取密文
+        String cipherText = cipherTextArea.getText();
+        //初始化代换表
+        initSubTable();
+        //解密
+        String plainText = subTable.decrypt(cipherText);
+        plainTextArea.setText(plainText);
     }
 
     /**
@@ -280,38 +346,6 @@ public class Main extends Application {
             hashMap.put(k, v);
         }
         subTable = new SubstitutionTable(hashMap);
-    }
-
-    /**
-     * 设置代换表加密动作
-     *
-     * @param cipherTextArea 密文的文本框
-     * @param plainTextArea  明文的文本框
-     */
-    private void encryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
-        //获取明文
-        String plainText = plainTextArea.getText();
-        //初始化代换表
-        initSubTable();
-        //加密
-        String cipherText = subTable.encrypt(plainText);
-        cipherTextArea.setText(cipherText);
-    }
-
-    /**
-     * 设置代换表解密动作
-     *
-     * @param cipherTextArea 密文的文本框
-     * @param plainTextArea  明文的文本框
-     */
-    private void decryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
-        //获取密文
-        String cipherText = cipherTextArea.getText();
-        //初始化代换表
-        initSubTable();
-        //解密
-        String plainText = subTable.decrypt(cipherText);
-        plainTextArea.setText(plainText);
     }
 
     /**
