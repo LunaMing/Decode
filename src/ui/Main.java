@@ -1,6 +1,7 @@
 package ui;
 
 import algorithm.Frequency;
+import algorithm.RC4;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,6 +28,8 @@ public class Main extends Application {
     List<TextField> subTableKeyTextField = new ArrayList<>();
     //代换表
     SubstitutionTable subTable;
+    //RC4
+    RC4 rc4 = new RC4("123456");
     //明文密文输入
     TextArea plainTextArea, cipherTextArea;
     //布局
@@ -51,33 +54,32 @@ public class Main extends Application {
     }
 
     /**
-     * 设置输入密钥系列布局
+     * 设置密钥系列布局
+     * 包括各种加密算法和密钥。
      */
     private void initKeyPane() {
         //凯撒
+        Label caesarHintLabel = new Label("*** 凯撒密码 ***");
         //设置输入密钥提示标签
-        Label caesarKeyHintLabel = new Label("凯撒密码的密钥（0，1，2 ... 25）");
+        Label caesarKeyHintLabel = new Label("密钥");
         //密钥输入框
         caesarKeyTextField = new TextField("0");
         //随机生成密钥的按钮
-        Button caesarRandomKeyButton = new Button("随机生成");
+        Button caesarRandomKeyButton = new Button("随机生成密钥");
         caesarRandomKeyButton.setOnAction(event -> nextRandomKey());
         //布局
         HBox caesarPane = new HBox();
-        caesarPane.getChildren().add(caesarKeyHintLabel);
-        caesarPane.getChildren().add(caesarKeyTextField);
-        caesarPane.getChildren().add(caesarRandomKeyButton);
+        caesarPane.getChildren().addAll(caesarKeyHintLabel, caesarKeyTextField, caesarRandomKeyButton);
+        caesarPane.setSpacing(5);
 
         //代换表
-        Label tableHintLabel;
-        tableHintLabel = new Label();
-        tableHintLabel.setText("代换表");
+        Label tableHintLabel = new Label("*** 代换表 ***");
         GridPane subTablePane = new GridPane();//代换表布局
         //初始化表内容
         Label label;
         TextField textField;
         char ch;
-        //小写
+        //同时初始化标签和文本框
         for (int i = 0; i < 26 + 26 + 10; i++) {
             int index;
             if (i < 26) {
@@ -102,10 +104,97 @@ public class Main extends Application {
             subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
         }
 
+        //加密解密按钮
+        //代换表
+        Button encryptTableButton = new Button(" 块加密 →→→ ");
+        Button decryptTableButton = new Button(" ←←← 块解密 ");
+        encryptTableButton.setOnAction(event -> encryptTable(cipherTextArea, plainTextArea));
+        decryptTableButton.setOnAction(event -> decryptTable(cipherTextArea, plainTextArea));
+        //RC4
+        Label RC4HintLabel = new Label("*** RC4 ***");
+        Button encryptFlowButton = new Button(" 流加密 →→→ ");
+        Button decryptFlowButton = new Button(" ←←← 流解密 ");
+        encryptFlowButton.setOnAction(event -> encryptFlow(cipherTextArea, plainTextArea));
+        decryptFlowButton.setOnAction(event -> decryptFlow(cipherTextArea, plainTextArea));
         //布局
-        keyPane.getChildren().add(caesarPane);
-        keyPane.getChildren().add(tableHintLabel);
-        keyPane.getChildren().add(subTablePane);
+        HBox buttonPane = new HBox();
+        buttonPane.getChildren().addAll(encryptTableButton, decryptTableButton);
+        HBox RC4Pane = new HBox();
+        RC4Pane.getChildren().addAll(RC4HintLabel, encryptFlowButton, decryptFlowButton);
+        //布局
+        keyPane.getChildren().addAll(caesarHintLabel, caesarPane,
+                tableHintLabel, subTablePane, buttonPane,
+                RC4HintLabel, RC4Pane);
+        keyPane.setSpacing(10);
+    }
+
+    /**
+     * 设置流加密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void encryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取明文
+        String plainText = plainTextArea.getText();
+        //加密
+        String cipherText = rc4.encrypt(plainText);
+        cipherTextArea.setText(cipherText);
+        //修复显示字符问题
+        if (cipherTextArea.getText().length() != plainText.length()) {
+            //如果加密之后，有的字符显示不出来
+            System.out.println("流加密显示字符问题");
+            plainTextArea.setText("流加密已经完成。\n" +
+                    "这个密文有些字符无法正常显示，\n" +
+                    "会导致解密使用的字符不全而出现错误。\n" +
+                    "建议使用这一段明文体验加密效果。");
+        }
+    }
+
+    /**
+     * 设置流解密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void decryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取密文
+        String cipherText = cipherTextArea.getText();
+        //解密
+        String plainText = rc4.decrypt(cipherText);
+        plainTextArea.setText(plainText);
+    }
+
+    /**
+     * 设置代换表加密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void encryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取明文
+        String plainText = plainTextArea.getText();
+        //初始化代换表
+        initSubTable();
+        //加密
+        String cipherText = subTable.encrypt(plainText);
+        cipherTextArea.setText(cipherText);
+    }
+
+    /**
+     * 设置代换表解密动作
+     *
+     * @param cipherTextArea 密文的文本框
+     * @param plainTextArea  明文的文本框
+     */
+    private void decryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
+        //获取密文
+        String cipherText = cipherTextArea.getText();
+        //初始化代换表
+        initSubTable();
+        //解密
+        String plainText = subTable.decrypt(cipherText);
+        plainTextArea.setText(plainText);
     }
 
     /**
@@ -129,20 +218,7 @@ public class Main extends Application {
                 //如果明文是空的就不用分析了
                 plainFreqResult.setText("（请输入明文内容）");
             } else {
-                //分析
-                TreeMap<Character, Double> map = Frequency.countFrequency(plainText);
-                List<Character> list = Frequency.sort(plainText);
-                //将分析结果做成string
-                StringBuilder result = new StringBuilder();
-                for (Character key : list) {
-                    result.append("【");
-                    result.append(key);
-                    result.append("】：");
-                    result.append(map.get(key));
-                    result.append("\n");
-                }
-                //放到label输出
-                plainFreqResult.setText(String.valueOf(result));
+                plainFreqResult.setText(String.valueOf(analyseFreq(plainText)));
             }
         });
         cipherFreqButton.setOnAction(event -> {
@@ -150,21 +226,7 @@ public class Main extends Application {
             if (cipherText.isEmpty()) {
                 cipherFreqResult.setText("（请输入密文内容）");
             } else {
-                //分析
-                TreeMap<Character, Double> map;
-                map = Frequency.countFrequency(cipherText);
-                List<Character> list = Frequency.sort(cipherText);
-                //list->string
-                StringBuilder result = new StringBuilder();
-                for (Character key : list) {
-                    result.append("【");
-                    result.append(key);
-                    result.append("】：");
-                    result.append(map.get(key));
-                    result.append("\n");
-                }
-                //放到label输出
-                cipherFreqResult.setText(String.valueOf(result));
+                cipherFreqResult.setText(String.valueOf(analyseFreq(cipherText)));
             }
         });
         //布局
@@ -179,14 +241,33 @@ public class Main extends Application {
     }
 
     /**
+     * 频率分析
+     *
+     * @param analyseStr 要分析的字符串
+     * @return 格式化输出的分析结果
+     */
+    private String analyseFreq(String analyseStr) {
+        //分析
+        TreeMap<Character, Double> map = Frequency.countFrequency(analyseStr);
+        List<Character> list = Frequency.sort(analyseStr);
+        //将分析结果做成string
+        StringBuilder result = new StringBuilder();
+        for (Character key : list) {
+            result.append("【");
+            result.append(key);
+            result.append("】：");
+            //用百分比输出
+            result.append(map.get(key) * 100);
+            result.append("%\n");
+        }
+        return String.valueOf(result);
+    }
+
+    /**
      * 设置底部按钮布局
      */
     private void initDecodeButtonPane() {
-        //加密解密按钮
-        Button encryptButton = new Button("→ 加密 →");
-        Button decryptButton = new Button("← 解密 ←");
-        encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
-        decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
+
         //代换表按钮
         Button keyInputButton = new Button("导入代换表");
         Button keyOutputButton = new Button("导出代换表");
@@ -220,7 +301,7 @@ public class Main extends Application {
         //布局
         encDecButtonPane.getChildren().addAll(plainTextInputButton, plainTextOutputButton,
                 cipherTextInputButton, cipherTextOutputButton,
-                encryptButton, decryptButton, keyInputButton, keyOutputButton);
+                keyInputButton, keyOutputButton);
         encDecButtonPane.setSpacing(20);//设置按钮间距
     }
 
@@ -262,6 +343,7 @@ public class Main extends Application {
 
     /**
      * 初始化代换表
+     * 就是把UI上面的密钥传给代换表的算法类。
      */
     private void initSubTable() {
         HashMap<Character, Character> hashMap = new HashMap<>();
@@ -275,58 +357,6 @@ public class Main extends Application {
             hashMap.put(k, v);
         }
         subTable = new SubstitutionTable(hashMap);
-    }
-
-    /**
-     * 设置加密动作
-     *
-     * @param cipherTextArea 密文的文本框
-     * @param plainTextArea  明文的文本框
-     */
-    private void encryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
-        /*encButton.setOnAction(event -> {
-            int tempInt = Integer.parseInt(keyTextArea.getText());
-            int key = Math.abs(tempInt) % 26;
-            String keyStr = String.valueOf(key);
-            keyTextArea.setText(keyStr);
-            String plainText = plainTextArea.getText();
-            String cipherText = new Caesar(key).encrypt(plainText);//凯撒密码
-            cipherTextArea.setText(cipherText);
-            caesarSetTable(key);
-        });*/
-        //获取明文
-        String plainText = plainTextArea.getText();
-        //初始化代换表
-        initSubTable();
-        //加密
-        String cipherText = subTable.encrypt(plainText);
-        cipherTextArea.setText(cipherText);
-    }
-
-    /**
-     * 设置解密动作
-     *
-     * @param cipherTextArea 密文的文本框
-     * @param plainTextArea  明文的文本框
-     */
-    private void decryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
-        /*decButton.setOnAction(event -> {
-            int tempInt = Integer.parseInt(keyTextArea.getText());
-            int offset = Math.abs(tempInt) % 26;
-            String keyStr = String.valueOf(offset);
-            keyTextArea.setText(keyStr);
-            String cipherText = cipherTextArea.getText();
-            String plainText = new Caesar(offset).decrypt(cipherText);//凯撒密码
-            plainTextArea.setText(plainText);
-            caesarSetTable(offset);
-        });*/
-        //获取密文
-        String cipherText = cipherTextArea.getText();
-        //初始化代换表
-        initSubTable();
-        //解密
-        String plainText = subTable.decrypt(cipherText);
-        plainTextArea.setText(plainText);
     }
 
     /**
