@@ -77,7 +77,7 @@ public class Main extends Application {
         Label label;
         TextField textField;
         char ch;
-        //小写
+        //同时初始化标签和文本框
         for (int i = 0; i < 26 + 26 + 10; i++) {
             int index;
             if (i < 26) {
