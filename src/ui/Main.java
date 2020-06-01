@@ -55,23 +55,23 @@ public class Main extends Application {
      */
     private void initKeyPane() {
         //凯撒
+        Label caesarHintLabel = new Label("*** 凯撒密码 ***");
         //设置输入密钥提示标签
-        Label caesarKeyHintLabel = new Label("凯撒密码的密钥（0，1，2 ... 25）");
+        Label caesarKeyHintLabel = new Label("密钥");
         //密钥输入框
         caesarKeyTextField = new TextField("0");
         //随机生成密钥的按钮
-        Button caesarRandomKeyButton = new Button("随机生成");
+        Button caesarRandomKeyButton = new Button("随机生成密钥");
         caesarRandomKeyButton.setOnAction(event -> nextRandomKey());
         //布局
         HBox caesarPane = new HBox();
-        caesarPane.getChildren().add(caesarKeyHintLabel);
-        caesarPane.getChildren().add(caesarKeyTextField);
-        caesarPane.getChildren().add(caesarRandomKeyButton);
+        caesarPane.getChildren().addAll(caesarKeyHintLabel, caesarKeyTextField, caesarRandomKeyButton);
+        caesarPane.setSpacing(5);
 
         //代换表
         Label tableHintLabel;
         tableHintLabel = new Label();
-        tableHintLabel.setText("代换表");
+        tableHintLabel.setText("*** 代换表 ***");
         GridPane subTablePane = new GridPane();//代换表布局
         //初始化表内容
         Label label;
@@ -103,9 +103,8 @@ public class Main extends Application {
         }
 
         //布局
-        keyPane.getChildren().add(caesarPane);
-        keyPane.getChildren().add(tableHintLabel);
-        keyPane.getChildren().add(subTablePane);
+        keyPane.getChildren().addAll(caesarHintLabel, caesarPane, tableHintLabel, subTablePane);
+        keyPane.setSpacing(10);
     }
 
     /**
