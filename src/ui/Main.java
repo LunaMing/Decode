@@ -102,8 +102,20 @@ public class Main extends Application {
             subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
         }
 
+        //代换表加密解密按钮
+        Button encryptButton = new Button(" 块加密 →→→ ");
+        Button decryptButton = new Button(" ←←← 块解密 ");
+        encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
+        decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
+        //流加密解密按钮
+        Button encButton = new Button(" 流加密 →→→ ");
+        Button decButton = new Button(" ←←← 流解密 ");
         //布局
-        keyPane.getChildren().addAll(caesarHintLabel, caesarPane, tableHintLabel, subTablePane);
+        HBox buttonPane = new HBox();
+        buttonPane.getChildren().addAll(encryptButton, decryptButton, encButton, decButton);
+
+        //布局
+        keyPane.getChildren().addAll(caesarHintLabel, caesarPane, tableHintLabel, subTablePane, buttonPane);
         keyPane.setSpacing(10);
     }
 
@@ -181,11 +193,7 @@ public class Main extends Application {
      * 设置底部按钮布局
      */
     private void initDecodeButtonPane() {
-        //加密解密按钮
-        Button encryptButton = new Button("→ 加密 →");
-        Button decryptButton = new Button("← 解密 ←");
-        encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
-        decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
+
         //代换表按钮
         Button keyInputButton = new Button("导入代换表");
         Button keyOutputButton = new Button("导出代换表");
@@ -219,7 +227,7 @@ public class Main extends Application {
         //布局
         encDecButtonPane.getChildren().addAll(plainTextInputButton, plainTextOutputButton,
                 cipherTextInputButton, cipherTextOutputButton,
-                encryptButton, decryptButton, keyInputButton, keyOutputButton);
+                keyInputButton, keyOutputButton);
         encDecButtonPane.setSpacing(20);//设置按钮间距
     }
 
@@ -283,16 +291,6 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void encryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
-        /*encButton.setOnAction(event -> {
-            int tempInt = Integer.parseInt(keyTextArea.getText());
-            int key = Math.abs(tempInt) % 26;
-            String keyStr = String.valueOf(key);
-            keyTextArea.setText(keyStr);
-            String plainText = plainTextArea.getText();
-            String cipherText = new Caesar(key).encrypt(plainText);//凯撒密码
-            cipherTextArea.setText(cipherText);
-            caesarSetTable(key);
-        });*/
         //获取明文
         String plainText = plainTextArea.getText();
         //初始化代换表
@@ -309,16 +307,6 @@ public class Main extends Application {
      * @param plainTextArea  明文的文本框
      */
     private void decryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
-        /*decButton.setOnAction(event -> {
-            int tempInt = Integer.parseInt(keyTextArea.getText());
-            int offset = Math.abs(tempInt) % 26;
-            String keyStr = String.valueOf(offset);
-            keyTextArea.setText(keyStr);
-            String cipherText = cipherTextArea.getText();
-            String plainText = new Caesar(offset).decrypt(cipherText);//凯撒密码
-            plainTextArea.setText(plainText);
-            caesarSetTable(offset);
-        });*/
         //获取密文
         String cipherText = cipherTextArea.getText();
         //初始化代换表
