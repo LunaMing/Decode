@@ -53,7 +53,7 @@ public class RC4 {
         initSBox();
         //开始加密
         StringBuilder cipherText = new StringBuilder();
-        int i = 0, j = 0, t = 0;
+        int i = 0, j = 0, t;
         for (char in : plainText.toCharArray()) {
             //先找到j
             j += S[i];
