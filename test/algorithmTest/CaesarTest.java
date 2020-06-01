@@ -11,13 +11,13 @@ public class CaesarTest {
     Caesar caesar;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         int key = 1;//a->b
         caesar = new Caesar(key);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
     }
 
     @Test

@@ -1,7 +1,7 @@
 package algorithm;
 
 public class Caesar {
-    public int offset;
+    int offset;
 
     public Caesar(int offset) {
         this.offset = offset;
@@ -16,36 +16,28 @@ public class Caesar {
      * @return 密文
      */
     public String encrypt(String plaintext) {
-        String ciphertext = "";
-        if (plaintext == "") {
-            return "";
-        } else {
-            for (int i = 0; i < plaintext.length(); i++) {
-                if (plaintext.charAt(i) >= 'A' && plaintext.charAt(i) <= 'Z') {
-                    ciphertext += (char) ((plaintext.charAt(i) - 'A' + offset) % 26 + 'A');
-                } else if (plaintext.charAt(i) >= 'a' && plaintext.charAt(i) <= 'z') {
-                    ciphertext += (char) ((plaintext.charAt(i) - 'a' + offset) % 26 + 'a');
-                } else {
-                    System.out.println("加密错误：不是英文字母");
-                }
+        StringBuilder ciphertext = new StringBuilder();
+        for (int i = 0; i < plaintext.length(); i++) {
+            if (plaintext.charAt(i) >= 'A' && plaintext.charAt(i) <= 'Z') {
+                ciphertext.append((char) ((plaintext.charAt(i) - 'A' + offset) % 26 + 'A'));
+            } else if (plaintext.charAt(i) >= 'a' && plaintext.charAt(i) <= 'z') {
+                ciphertext.append((char) ((plaintext.charAt(i) - 'a' + offset) % 26 + 'a'));
+            } else {
+                ciphertext.append(plaintext.charAt(i));//不是英文字母的就保持原状
             }
         }
-        return ciphertext;
+        return ciphertext.toString();
     }
 
     public String decrypt(String ciphertext) {
-        String plaintext = "";
-        if (ciphertext == "") {
-            return "";
-        } else {
-            for (int i = 0; i < ciphertext.length(); i++) {
-                if (ciphertext.charAt(i) <= 'Z') {
-                    plaintext += (char) ((ciphertext.charAt(i) - 'A' - offset + 26) % 26 + 'A');
-                } else {
-                    plaintext += (char) ((ciphertext.charAt(i) - 'a' - offset + 26) % 26 + 'a');
-                }
+        StringBuilder plaintext = new StringBuilder();
+        for (int i = 0; i < ciphertext.length(); i++) {
+            if (ciphertext.charAt(i) <= 'Z') {
+                plaintext.append((char) ((ciphertext.charAt(i) - 'A' - offset + 26) % 26 + 'A'));
+            } else {
+                plaintext.append((char) ((ciphertext.charAt(i) - 'a' - offset + 26) % 26 + 'a'));
             }
         }
-        return plaintext;
+        return plaintext.toString();
     }
 }
