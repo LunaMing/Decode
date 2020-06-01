@@ -51,7 +51,8 @@ public class Main extends Application {
     }
 
     /**
-     * 设置输入密钥系列布局
+     * 设置密钥系列布局
+     * 包括各种加密算法和密钥。
      */
     private void initKeyPane() {
         //凯撒
@@ -103,16 +104,16 @@ public class Main extends Application {
         }
 
         //代换表加密解密按钮
-        Button encryptButton = new Button(" 块加密 →→→ ");
-        Button decryptButton = new Button(" ←←← 块解密 ");
-        encryptButton.setOnAction(event -> encryptAction(cipherTextArea, plainTextArea));
-        decryptButton.setOnAction(event -> decryptAction(cipherTextArea, plainTextArea));
+        Button encryptTableButton = new Button(" 块加密 →→→ ");
+        Button decryptTableButton = new Button(" ←←← 块解密 ");
+        encryptTableButton.setOnAction(event -> encryptTable(cipherTextArea, plainTextArea));
+        decryptTableButton.setOnAction(event -> decryptTable(cipherTextArea, plainTextArea));
         //流加密解密按钮
         Button encButton = new Button(" 流加密 →→→ ");
         Button decButton = new Button(" ←←← 流解密 ");
         //布局
         HBox buttonPane = new HBox();
-        buttonPane.getChildren().addAll(encryptButton, decryptButton, encButton, decButton);
+        buttonPane.getChildren().addAll(encryptTableButton, decryptTableButton, encButton, decButton);
 
         //布局
         keyPane.getChildren().addAll(caesarHintLabel, caesarPane, tableHintLabel, subTablePane, buttonPane);
@@ -286,12 +287,12 @@ public class Main extends Application {
     }
 
     /**
-     * 设置加密动作
+     * 设置代换表加密动作
      *
      * @param cipherTextArea 密文的文本框
      * @param plainTextArea  明文的文本框
      */
-    private void encryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
+    private void encryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
         //获取明文
         String plainText = plainTextArea.getText();
         //初始化代换表
@@ -302,12 +303,12 @@ public class Main extends Application {
     }
 
     /**
-     * 设置解密动作
+     * 设置代换表解密动作
      *
      * @param cipherTextArea 密文的文本框
      * @param plainTextArea  明文的文本框
      */
-    private void decryptAction(TextArea cipherTextArea, TextArea plainTextArea) {
+    private void decryptTable(TextArea cipherTextArea, TextArea plainTextArea) {
         //获取密文
         String cipherText = cipherTextArea.getText();
         //初始化代换表
