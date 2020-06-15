@@ -42,7 +42,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setScene(scene);
         primaryStage.show();
-        primaryStage.setTitle("凯撒密码、代换表、频率分析");
+        //总标题
+        primaryStage.setTitle("网安实验-加密解密工具");
 
         initTopPane();
         initTextFieldPane();
