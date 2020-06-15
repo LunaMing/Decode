@@ -43,7 +43,7 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setTitle("凯撒密码、代换表、频率分析");
 
-        initKeyPane();
+        initTopPane();
         initTextFieldPane();
         initDecodeButtonPane();
 
@@ -54,11 +54,11 @@ public class Main extends Application {
     }
 
     /**
-     * 设置密钥系列布局
-     * 包括各种加密算法和密钥。
+     * 设置顶部系列布局
+     * 包括各种加密算法按钮和密钥设置。
      */
-    private void initKeyPane() {
-        //凯撒
+    private void initTopPane() {
+        //------------------凯撒------------------------------------
         Label caesarHintLabel = new Label("*** 凯撒密码 ***");
         //设置输入密钥提示标签
         Label caesarKeyHintLabel = new Label("密钥");
@@ -72,7 +72,7 @@ public class Main extends Application {
         caesarPane.getChildren().addAll(caesarKeyHintLabel, caesarKeyTextField, caesarRandomKeyButton);
         caesarPane.setSpacing(5);
 
-        //代换表
+        //----------------代换表-----------------------------------
         Label tableHintLabel = new Label("*** 代换表 ***");
         GridPane subTablePane = new GridPane();//代换表布局
         //初始化表内容
@@ -103,15 +103,15 @@ public class Main extends Application {
             subTablePane.add(subTableKeyLabel.get(i), m, n);
             subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
         }
-
         //加密解密按钮
-        //代换表
         Button encryptTableButton = new Button(" 块加密 →→→ ");
         Button decryptTableButton = new Button(" ←←← 块解密 ");
         encryptTableButton.setOnAction(event -> encryptTable(cipherTextArea, plainTextArea));
         decryptTableButton.setOnAction(event -> decryptTable(cipherTextArea, plainTextArea));
-        //RC4
+
+        //---------------RC4-------------------------------------------------------------------
         Label RC4HintLabel = new Label("*** RC4 ***");
+        //加密解密按钮
         Button encryptFlowButton = new Button(" 流加密 →→→ ");
         Button decryptFlowButton = new Button(" ←←← 流解密 ");
         encryptFlowButton.setOnAction(event -> encryptFlow(cipherTextArea, plainTextArea));
