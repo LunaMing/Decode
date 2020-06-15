@@ -196,7 +196,10 @@ public class Main extends Application {
         Label leftLabel = new Label("明文");
         Label rightLabel = new Label("密文");
         //文本框
-        plainTextArea = new TextArea("abcDEF");
+        //设置默认明文
+        plainTextArea = new TextArea("English is OK!\n" +
+                "然后，中文也是可以加密的噢！\n" +
+                "数字也可以2333");
         cipherTextArea = new TextArea();
         //频率分析
         Label plainFreqResult = new Label("（请点击按钮开始分析）");
