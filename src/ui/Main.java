@@ -140,15 +140,6 @@ public class Main extends Application {
         //加密
         String cipherText = rc4.encrypt(plainText);
         cipherTextArea.setText(cipherText);
-        //修复显示字符问题
-        if (cipherTextArea.getText().length() != plainText.length()) {
-            //如果加密之后，有的字符显示不出来
-            System.out.println("流加密显示字符问题");
-            plainTextArea.setText("流加密已经完成。\n" +
-                    "这个密文有些字符无法正常显示，\n" +
-                    "会导致解密使用的字符不全而出现错误。\n" +
-                    "建议使用这一段明文体验加密效果。");
-        }
     }
 
     /**

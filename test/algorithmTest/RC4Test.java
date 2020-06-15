@@ -30,4 +30,11 @@ public class RC4Test {
         Assert.assertEquals(expectedStr, plainS);
     }
 
+    @Test
+    public void base64EncodeAndDecode() {
+        String utf8Str = "hello";
+        String actualStr = rc4.base64Decode(rc4.base64Encode(utf8Str));
+        Assert.assertEquals(utf8Str, actualStr);
+    }
+
 }

@@ -1,5 +1,8 @@
 package algorithm;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 public class RC4 {
     String key;
     char[] S;
@@ -71,7 +74,9 @@ public class RC4 {
             i++;
             i %= 256;//防止数组越界
         }
-        return cipherText.toString();
+        String res = cipherText.toString();
+        //经过base64编码，解决显示乱码问题
+        return base64Encode(res);
     }
 
     /**
@@ -82,6 +87,35 @@ public class RC4 {
      * @return 明文
      */
     public String decrypt(String cipherText) {
-        return this.encrypt(cipherText);
+        //进来的密文首先要转为UTF8
+        String UTF8cipher = base64Decode(cipherText);
+        //解密（按照RC4就是等同于加密）
+        String plainBase64 = this.encrypt(UTF8cipher);
+        //再转为UTF8
+        return base64Decode(plainBase64);
+    }
+
+    /**
+     * base64编码
+     * 解决乱码显示问题
+     *
+     * @param utf8Str UTF8的字符串
+     * @return 用base64编码之后的字符串
+     */
+    public String base64Encode(String utf8Str) {
+        return Base64.getEncoder().encodeToString(utf8Str.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * base64解码
+     * 解决乱码显示问题
+     *
+     * @param base64Str base64的字符串
+     * @return 用base64解码码之后的字符串，是UTF8的格式
+     */
+    public String base64Decode(String base64Str) {
+        // 解码
+        byte[] base64decodedBytes = Base64.getDecoder().decode(base64Str);
+        return new String(base64decodedBytes, StandardCharsets.UTF_8);
     }
 }
