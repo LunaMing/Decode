@@ -87,7 +87,12 @@ public class RC4 {
      * @return 明文
      */
     public String decrypt(String cipherText) {
-        return this.encrypt(base64Decode(cipherText));
+        //进来的密文首先要转为UTF8
+        String UTF8cipher = base64Decode(cipherText);
+        //解密（按照RC4就是等同于加密）
+        String plainBase64 = this.encrypt(UTF8cipher);
+        //再转为UTF8
+        return base64Decode(plainBase64);
     }
 
     /**
