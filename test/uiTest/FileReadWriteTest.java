@@ -29,7 +29,7 @@ public class FileReadWriteTest {
     @Test
     public void readTxtMoreLines() {
         String s = fileReadWrite.readTxt("resTest/testWrite.txt");
-        Assert.assertEquals("aabcxyz", s);
+        Assert.assertEquals("aabc\nxyz", s);
     }
 
     @Test
