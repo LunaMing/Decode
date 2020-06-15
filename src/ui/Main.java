@@ -271,7 +271,7 @@ public class Main extends Application {
         //代换表按钮
         Button keyInputButton = new Button("导入代换表");
         Button keyOutputButton = new Button("导出代换表");
-        String pathStr = "res/key.txt";//代换表文件路径
+        String pathStr = "res/key_subTable.txt";//代换表文件路径
         keyInputButton.setOnAction(event -> inputKeyTable(pathStr));
         keyOutputButton.setOnAction(event -> outputKeyTable(pathStr));
         //导入明文密文按钮
