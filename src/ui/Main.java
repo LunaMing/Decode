@@ -149,6 +149,8 @@ public class Main extends Application {
     private void encryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
         //获取明文
         String plainText = plainTextArea.getText();
+        //替换当前密钥
+        rc4.setKey(rc4KeyTextField.getText());
         //加密
         String cipherText = rc4.encrypt(plainText);
         cipherTextArea.setText(cipherText);
@@ -163,6 +165,8 @@ public class Main extends Application {
     private void decryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
         //获取密文
         String cipherText = cipherTextArea.getText();
+        //替换当前密钥
+        rc4.setKey(rc4KeyTextField.getText());
         //解密
         String plainText = rc4.decrypt(cipherText);
         plainTextArea.setText(plainText);

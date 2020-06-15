@@ -118,4 +118,13 @@ public class RC4 {
         byte[] base64decodedBytes = Base64.getDecoder().decode(base64Str);
         return new String(base64decodedBytes, StandardCharsets.UTF_8);
     }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
 }
