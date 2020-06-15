@@ -69,9 +69,14 @@ public class Main extends Application {
         //随机生成密钥的按钮
         Button caesarRandomKeyButton = new Button("随机生成密钥");
         caesarRandomKeyButton.setOnAction(event -> randomCaesarKey());
+        Button caesarToTableButton = new Button("凯撒密码直接放入代换表");
+        caesarToTableButton.setOnAction(e -> {
+            int key = Integer.parseInt(caesarKeyTextField.getText());
+            caesarSetTable(key);
+        });
         //布局
         HBox caesarPane = new HBox();
-        caesarPane.getChildren().addAll(caesarKeyHintLabel, caesarKeyTextField, caesarRandomKeyButton);
+        caesarPane.getChildren().addAll(caesarKeyHintLabel, caesarKeyTextField, caesarRandomKeyButton, caesarToTableButton);
         caesarPane.setSpacing(5);
 
         //----------------代换表-----------------------------------
@@ -137,7 +142,7 @@ public class Main extends Application {
         //----------------总体布局---------------------------------------------------------
         keyPane.getChildren().addAll(caesarHintLabel, caesarPane,
                 tableHintLabel, subTablePane, tableButtonPane,
-                RC4HintLabel,rc4keyPane, RC4ButtonPane);
+                RC4HintLabel, rc4keyPane, RC4ButtonPane);
         keyPane.setSpacing(10);
     }
 
