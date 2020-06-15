@@ -21,8 +21,9 @@ public class Main extends Application {
     //主场景
     BorderPane mainPane = new BorderPane();
     Scene scene = new Scene(mainPane, 700, 700);
-    //凯撒密钥
+    //密钥输入文本框
     TextField caesarKeyTextField;
+    TextField rc4KeyTextField;
     //代换表密钥
     List<Label> subTableKeyLabel = new ArrayList<>();
     List<TextField> subTableKeyTextField = new ArrayList<>();
@@ -43,7 +44,7 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setTitle("凯撒密码、代换表、频率分析");
 
-        initKeyPane();
+        initTopPane();
         initTextFieldPane();
         initDecodeButtonPane();
 
@@ -54,11 +55,11 @@ public class Main extends Application {
     }
 
     /**
-     * 设置密钥系列布局
-     * 包括各种加密算法和密钥。
+     * 设置顶部系列布局
+     * 包括各种加密算法按钮和密钥设置。
      */
-    private void initKeyPane() {
-        //凯撒
+    private void initTopPane() {
+        //------------------凯撒------------------------------------
         Label caesarHintLabel = new Label("*** 凯撒密码 ***");
         //设置输入密钥提示标签
         Label caesarKeyHintLabel = new Label("密钥");
@@ -66,13 +67,13 @@ public class Main extends Application {
         caesarKeyTextField = new TextField("0");
         //随机生成密钥的按钮
         Button caesarRandomKeyButton = new Button("随机生成密钥");
-        caesarRandomKeyButton.setOnAction(event -> nextRandomKey());
+        caesarRandomKeyButton.setOnAction(event -> randomCaesarKey());
         //布局
         HBox caesarPane = new HBox();
         caesarPane.getChildren().addAll(caesarKeyHintLabel, caesarKeyTextField, caesarRandomKeyButton);
         caesarPane.setSpacing(5);
 
-        //代换表
+        //----------------代换表-----------------------------------
         Label tableHintLabel = new Label("*** 代换表 ***");
         GridPane subTablePane = new GridPane();//代换表布局
         //初始化表内容
@@ -103,28 +104,39 @@ public class Main extends Application {
             subTablePane.add(subTableKeyLabel.get(i), m, n);
             subTablePane.add(subTableKeyTextField.get(i), m, n + 1);
         }
-
         //加密解密按钮
-        //代换表
         Button encryptTableButton = new Button(" 块加密 →→→ ");
         Button decryptTableButton = new Button(" ←←← 块解密 ");
         encryptTableButton.setOnAction(event -> encryptTable(cipherTextArea, plainTextArea));
         decryptTableButton.setOnAction(event -> decryptTable(cipherTextArea, plainTextArea));
-        //RC4
+        //布局
+        //按钮部分
+        HBox tableButtonPane = new HBox();
+        tableButtonPane.getChildren().addAll(encryptTableButton, decryptTableButton);
+
+        //---------------RC4-------------------------------------------------------------------
         Label RC4HintLabel = new Label("*** RC4 ***");
+        //设置输入密钥提示标签
+        Label rc4KeyHintLabel = new Label("密钥");
+        //密钥输入框
+        rc4KeyTextField = new TextField("my own rc4 key");
+        //加密解密按钮
         Button encryptFlowButton = new Button(" 流加密 →→→ ");
         Button decryptFlowButton = new Button(" ←←← 流解密 ");
         encryptFlowButton.setOnAction(event -> encryptFlow(cipherTextArea, plainTextArea));
         decryptFlowButton.setOnAction(event -> decryptFlow(cipherTextArea, plainTextArea));
         //布局
-        HBox buttonPane = new HBox();
-        buttonPane.getChildren().addAll(encryptTableButton, decryptTableButton);
-        HBox RC4Pane = new HBox();
-        RC4Pane.getChildren().addAll(RC4HintLabel, encryptFlowButton, decryptFlowButton);
-        //布局
+        //密钥部分
+        HBox rc4keyPane = new HBox();
+        rc4keyPane.getChildren().addAll(rc4KeyHintLabel, rc4KeyTextField);
+        //加密解密按钮部分
+        HBox RC4ButtonPane = new HBox();
+        RC4ButtonPane.getChildren().addAll(encryptFlowButton, decryptFlowButton);
+
+        //----------------总体布局---------------------------------------------------------
         keyPane.getChildren().addAll(caesarHintLabel, caesarPane,
-                tableHintLabel, subTablePane, buttonPane,
-                RC4HintLabel, RC4Pane);
+                tableHintLabel, subTablePane, tableButtonPane,
+                RC4HintLabel,rc4keyPane, RC4ButtonPane);
         keyPane.setSpacing(10);
     }
 
@@ -137,6 +149,8 @@ public class Main extends Application {
     private void encryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
         //获取明文
         String plainText = plainTextArea.getText();
+        //替换当前密钥
+        rc4.setKey(rc4KeyTextField.getText());
         //加密
         String cipherText = rc4.encrypt(plainText);
         cipherTextArea.setText(cipherText);
@@ -151,6 +165,8 @@ public class Main extends Application {
     private void decryptFlow(TextArea cipherTextArea, TextArea plainTextArea) {
         //获取密文
         String cipherText = cipherTextArea.getText();
+        //替换当前密钥
+        rc4.setKey(rc4KeyTextField.getText());
         //解密
         String plainText = rc4.decrypt(cipherText);
         plainTextArea.setText(plainText);
@@ -196,7 +212,10 @@ public class Main extends Application {
         Label leftLabel = new Label("明文");
         Label rightLabel = new Label("密文");
         //文本框
-        plainTextArea = new TextArea("abcDEF");
+        //设置默认明文
+        plainTextArea = new TextArea("English is OK!\n" +
+                "然后，中文也是可以加密的噢！\n" +
+                "数字也可以2333");
         cipherTextArea = new TextArea();
         //频率分析
         Label plainFreqResult = new Label("（请点击按钮开始分析）");
@@ -353,7 +372,7 @@ public class Main extends Application {
     /**
      * 随机生成密钥
      */
-    private void nextRandomKey() {
+    private void randomCaesarKey() {
         //生成随机数
         Random rand = new Random();
         int key = rand.nextInt(25);
