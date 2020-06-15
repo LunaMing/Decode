@@ -1,10 +1,6 @@
 package ui;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class FileReadWrite {
 
@@ -15,24 +11,26 @@ public class FileReadWrite {
      * @return 返回读取到的内容
      */
     public static String readTxt(String txtPath) {
+        StringBuilder str = new StringBuilder();
         File file = new File(txtPath);
-        if (file.isFile() && file.exists()) {
-            try {
-                FileInputStream fileInputStream = new FileInputStream(file);
-                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String text;
-                while ((text = bufferedReader.readLine()) != null) {
-                    sb.append(text);
+        Reader reader;
+        try {
+            // 一次读一个字符
+            reader = new InputStreamReader(new FileInputStream(file));
+            int tempchar;
+            while ((tempchar = reader.read()) != -1) {
+                // 对于windows下，\r\n这两个字符在一起时，表示一个换行。
+                // 但如果这两个字符分开显示时，会换两次行。
+                // 因此，屏蔽掉\r，或者屏蔽\n。否则，将会多出很多空行。
+                if (((char) tempchar) != '\r') {
+                    str.append((char) tempchar);
                 }
-                return sb.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
+        return String.valueOf(str);
     }
 
 
